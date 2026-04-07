@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>BLACKBOX — COORDINATOR</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --green: #00ff99; --green-dim: #00cc77; --green-dark: #003322;
+  --red: #ff3355; --amber: #ffaa00;
+  --bg: #080b08; --bg2: #0f130f; --border: #1a2a1a;
+  --text: #c8d8c8; --muted: #4a5a4a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Share Tech Mono', monospace; padding: 24px 16px 60px; }
+.wrap { max-width: 700px; margin: 0 auto; }
+.title { font-family: 'Orbitron', monospace; font-size: 28px; font-weight: 900; color: var(--green); letter-spacing: 0.15em; margin-bottom: 4px; }
+.sub { color: var(--muted); font-size: 12px; letter-spacing: 0.15em; margin-bottom: 28px; }
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px; position: relative; overflow: hidden; }
+.card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--green), transparent); opacity: 0.3; }
+.card-title { font-size: 10px; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 14px; }
+.card-title::before { content: '// '; color: var(--green); opacity: 0.5; }
+label { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; display: block; margin-bottom: 5px; }
+input { background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 14px; padding: 9px 12px; border-radius: 5px; outline: none; transition: border-color 0.2s; }
+input:focus { border-color: rgba(0,255,100,0.4); }
+.add-row { display: grid; grid-template-columns: 1fr 80px 80px auto; gap: 8px; align-items: end; margin-bottom: 20px; }
+.add-row input { width: 100%; }
+.add-btn { background: var(--green); color: #000; border: none; font-family: 'Share Tech Mono', monospace; font-size: 13px; padding: 10px 16px; border-radius: 5px; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+.add-btn:hover { background: var(--green-dim); }
+.del-btn { background: transparent; border: 1px solid var(--red); color: var(--red); font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
+.del-btn:hover { background: rgba(255,50,80,0.1); }
+.lb-row { display: grid; grid-template-columns: 32px 1fr 70px 70px 40px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; align-items: center; gap: 8px; }
+.lb-row.header-row { color: var(--muted); font-size: 10px; letter-spacing: 0.1em; padding-bottom: 10px; }
+.lb-rank { font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700; text-align: center; }
+.gold { color: #ffd700; } .silver { color: #c0c0c0; } .bronze { color: #cd7f32; } .other { color: var(--muted); }
+.lb-score { color: var(--green); font-weight: bold; text-align: right; }
+.lb-queries { color: var(--muted); font-size: 12px; text-align: right; }
+.lb-empty { color: var(--muted); font-size: 12px; padding: 20px 0; text-align: center; }
+.sessions-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.sessions-table th { color: var(--muted); text-align: left; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 10px; letter-spacing: 0.1em; }
+.sessions-table td { padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+.sessions-table td:last-child { color: var(--muted); font-size: 11px; }
+.badge { font-size: 10px; padding: 2px 6px; border-radius: 3px; background: var(--green-dark); color: var(--green); display: inline-block; margin-right: 4px; }
+.refresh-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 5px 12px; border-radius: 4px; cursor: pointer; transition: all 0.15s; margin-left: 10px; }
+.refresh-btn:hover { border-color: var(--green); color: var(--green); }
+.status-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg2); border-top: 1px solid var(--border); padding: 6px 20px; display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); z-index: 100; }
+.status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); margin-right: 6px; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="title">BLACKBOX</div>
+  <div class="sub">// COORDINATOR PANEL — DO NOT SHARE THIS URL //</div>
+
+  <!-- ROUND CONTROL -->
+  <div class="card">
+    <div class="card-title">ROUND CONTROL</div>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+      <div>
+        <div class="timer-label">CURRENT ROUND</div>
+        <div style="font-family:'Orbitron',monospace;font-size:28px;font-weight:700;color:var(--green)" id="round-display">—</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="add-btn" onclick="nextRound()">NEXT ROUND →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STANDINGS + ELIMINATION -->
+  <div class="card">
+  <div class="card-title">ROUND CONTROL</div>
+  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+    <div>
+      <div class="timer-label">CURRENT ROUND</div>
+      <div style="font-family:'Orbitron',monospace;font-size:28px;font-weight:700;color:var(--green)" id="round-display">—</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="add-btn" id="btn-end-round"
+              style="background:var(--amber);color:#000;"
+              onclick="endRound()">END ROUND</button>
+      <button class="add-btn" id="btn-next-round"
+              style="opacity:0.4;"
+              disabled onclick="nextRound()">NEXT ROUND →</button>
+    </div>
+  </div>
+</div>
+
+  <!-- LIVE SESSIONS -->
+  <div class="card">
+    <div class="card-title">
+      LIVE SESSION DATA
+      <button class="refresh-btn" onclick="loadSessions()">↻ REFRESH</button>
+    </div>
+    <table class="sessions-table">
+      <thead>
+        <tr><th>TEAM</th><th>QUERIES</th><th>LAST 3 PROBES</th></tr>
+      </thead>
+      <tbody id="sessions-body">
+        <tr><td colspan="3" style="color:var(--muted);padding:16px 0;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+<script>
+async function loadStandings() {
+  const res  = await fetch('/api/standings');
+  const data = await res.json();
+  document.getElementById('round-display').textContent = `ROUND ${data.round}`;
+
+  const endBtn  = document.getElementById('btn-end-round');
+  const nextBtn = document.getElementById('btn-next-round');
+
+  if (data.round_ended) {
+    endBtn.textContent  = '✓ ROUND ENDED';
+    endBtn.disabled     = true;
+    endBtn.style.opacity = '0.4';
+    nextBtn.disabled    = false;
+    nextBtn.style.opacity = '1';
+  } else {
+    endBtn.textContent  = 'END ROUND';
+    endBtn.disabled     = false;
+    endBtn.style.opacity = '1';
+    nextBtn.disabled    = true;
+    nextBtn.style.opacity = '0.4';
+  }
+
+  const ranks  = ['gold','silver','bronze'];
+  const active = data.teams.filter(t => !t.eliminated);
+  const elimed = data.teams.filter(t => t.eliminated);
+  const all    = [...active, ...elimed];
+
+  if (all.length === 0) {
+    document.getElementById('standings-list').innerHTML = `
+      <div class="lb-row header-row"><div>#</div><div>TEAM</div><div>SCORE</div><div>CORRECT</div><div>QUERIES</div><div>STATUS</div></div>
+      <div class="lb-empty">No teams yet</div>`;
+    return;
+  }
+
+  document.getElementById('standings-list').innerHTML = `
+    <div class="lb-row header-row" style="grid-template-columns:32px 1fr 70px 70px 70px 90px;">
+      <div>#</div><div>TEAM</div><div>SCORE</div><div>CORRECT</div><div>QUERIES</div><div>STATUS</div>
+    </div>
+    ${all.map((t,i) => `
+      <div class="lb-row" style="grid-template-columns:32px 1fr 70px 70px 70px 90px;opacity:${t.eliminated?0.4:1}">
+        <div class="lb-rank ${t.eliminated?'other':ranks[i]||'other'}">${t.eliminated?'✕':i+1}</div>
+        <div>${t.team}</div>
+        <div class="lb-score">${t.round_score}</div>
+        <div style="text-align:right;color:var(--green)">${t.correct}</div>
+        <div class="lb-queries">${t.queries}</div>
+        <div style="font-size:11px;color:${t.eliminated?'var(--red)':'var(--green)'}">
+          ${t.eliminated ? 'ELIMINATED' : 'ACTIVE'}
+        </div>
+      </div>
+    `).join('')}`;
+
+  document.getElementById('status-right').textContent =
+    `${active.length} ACTIVE · ${elimed.length} ELIMINATED · ROUND ${data.round} ${data.round_ended ? '(ENDED)' : '(LIVE)'}`;
+}
+
+async function endRound() {
+  if (!confirm('End this round? Participants will not be able to submit after this.')) return;
+  await fetch('/api/end-round', { method: 'POST' });
+  loadStandings();
+}
+
+async function eliminateTeams() {
+  const n   = parseInt(document.getElementById('elim-n').value) || 1;
+  const res = await fetch('/api/eliminate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bottom_n: n })
+  });
+  const data = await res.json();
+  alert(`ELIMINATED: ${data.eliminated.join(', ')}`);
+  loadStandings();
+}
+
+async function nextRound() {
+  if (!confirm('Move all surviving teams to next round?')) return;
+  const res  = await fetch('/api/next-round', { method: 'POST' });
+  const data = await res.json();
+  if (data.error) { alert(data.error); return; }
+  document.getElementById('round-display').textContent = `ROUND ${data.round}`;
+  loadStandings();
+}
+
+async function loadSessions() {
+  const res   = await fetch('/all-sessions');
+  const data  = await res.json();
+  const teams = Object.keys(data.teams || {});
+  const tbody = document.getElementById('sessions-body');
+  if (teams.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="color:var(--muted);padding:16px 0;">No probes yet</td></tr>';
+    return;
+  }
+  tbody.innerHTML = teams.map(team => {
+    const t     = data.teams[team];
+    const last3 = (t.history || []).slice(-3).reverse().map(h =>
+      `<span class="badge">C${h.challenge}</span>${h.input}→${h.output}`
+    ).join('  ');
+    return `<tr>
+      <td>${team}</td>
+      <td>${t.queries}</td>
+      <td>${last3 || '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+loadStandings();
+loadSessions();
+setInterval(loadStandings, 10000);
+setInterval(loadSessions, 10000);
+</script>
+</body>
+</html>

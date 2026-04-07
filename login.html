@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>BLACKBOX — ADMIN LOGIN</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #080b08;
+  color: #c8d8c8;
+  font-family: 'Share Tech Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,100,0.015) 2px, rgba(0,255,100,0.015) 4px);
+  pointer-events: none;
+}
+.box {
+  background: #0f130f;
+  border: 1px solid #1a2a1a;
+  border-radius: 10px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 380px;
+  position: relative;
+  overflow: hidden;
+}
+.box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00ff99, transparent);
+  opacity: 0.4;
+}
+.title {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px;
+  font-weight: 900;
+  color: #00ff99;
+  letter-spacing: 0.15em;
+  margin-bottom: 4px;
+}
+.sub { color: #4a5a4a; font-size: 11px; letter-spacing: 0.15em; margin-bottom: 28px; }
+label { font-size: 11px; color: #4a5a4a; letter-spacing: 0.1em; display: block; margin-bottom: 6px; }
+input[type="password"] {
+  width: 100%;
+  background: #080b08;
+  border: 1px solid #1a2a1a;
+  color: #c8d8c8;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 16px;
+  padding: 11px 14px;
+  border-radius: 6px;
+  outline: none;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+  letter-spacing: 0.2em;
+}
+input[type="password"]:focus { border-color: rgba(0,255,100,0.4); }
+button {
+  width: 100%;
+  background: #00ff99;
+  color: #000;
+  border: none;
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 0.15em;
+  transition: background 0.15s;
+}
+button:hover { background: #00cc77; }
+.err {
+  color: #ff3355;
+  font-size: 12px;
+  margin-top: 12px;
+  text-align: center;
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="title">BLACKBOX</div>
+  <div class="sub">// COORDINATOR ACCESS ONLY //</div>
+  <form method="POST" action="/admin">
+    <label>ACCESS CODE</label>
+    <input type="password" name="password" placeholder="••••••••" autofocus />
+    <button type="submit">[ ENTER → ]</button>
+  </form>
+  <div class="err" id="err">INVALID ACCESS CODE</div>
+</div>
+<script>
+  if (window.location.search.includes('error')) {
+    document.getElementById('err').style.display = 'block';
+  }
+</script>
+</body>
+</html>
