@@ -1,47 +1,76 @@
 ROUNDS = {
-    1: [1, 2, 3],
-    2: [4, 5, 6],
-    3: [7, 8, 9],
+    1: [1, 2, 3, 4, 5],
+    2: [6, 7, 8, 9],
+    3: [10, 11, 12],
 }
 
-def vowel_count(x):
-    # input: any word → output: number of vowels
-    return sum(1 for c in str(x).lower() if c in 'aeiou')
+# ── ROUND 1 — EASY (5 questions) ──
 
-def word_reverse(x):
-    # input: any sentence → output: words in reverse order
-    return " ".join(str(x).split()[::-1])
+def double_consonants(x):
+    # doubles every consonant in the word
+    vowels = 'aeiou'
+    return ''.join(c*2 if c.isalpha() and c.lower() not in vowels else c for c in str(x))
 
-def char_count(x):
-    # input: any word → output: number of characters
-    return len(str(x).replace(" ", ""))
+def sum_digits(x):
+    # sums all digits in a number
+    return sum(int(d) for d in str(x) if d.isdigit())
+
+def reverse_string(x):
+    # reverses the entire string character by character
+    return str(x)[::-1]
+
+def count_words(x):
+    # counts number of words in a sentence
+    return len(str(x).split())
+
+def alternate_case(x):
+    # alternates upper and lower case starting with upper
+    result = ''
+    i = 0
+    for c in str(x):
+        if c.isalpha():
+            result += c.upper() if i % 2 == 0 else c.lower()
+            i += 1
+        else:
+            result += c
+    return result
+
+# ── ROUND 2 — MEDIUM (4 questions) ──
 
 def binary_to_decimal(x):
-    # input: binary string like "1010" → output: decimal
+    # converts binary string to decimal
     try:
         return int(str(x).strip(), 2)
     except:
-        return "invalid input"
+        return "invalid"
+
+def ascii_sum(x):
+    # sums ASCII values of all characters
+    return sum(ord(c) for c in str(x))
 
 def is_palindrome(x):
-    # input: any word → output: yes or no
+    # checks if string reads same forwards and backwards
     s = str(x).lower().replace(" ", "")
     return "yes" if s == s[::-1] else "no"
 
-def ascii_sum(x):
-    # input: any word → output: sum of ASCII values
-    return sum(ord(c) for c in str(x))
+def vowel_consonant_swap(x):
+    # swaps vowels with * and consonants with #
+    result = ''
+    for c in str(x).lower():
+        if c.isalpha():
+            result += '*' if c in 'aeiou' else '#'
+        else:
+            result += c
+    return result
 
-def anagram_sort(x):
-    # input: any word → output: letters sorted alphabetically
-    return "".join(sorted(str(x).lower().replace(" ", "")))
+# ── ROUND 3 — HARD (3 questions) ──
 
 def caesar(x):
-    # input: "hello,3" → output: shifted string
+    # caesar cipher with variable shift
     try:
         text, n = x.split(",")
         n = int(n.strip())
-        result = ""
+        result = ''
         for c in text.strip():
             if c.isalpha():
                 base = ord('a') if c.islower() else ord('A')
@@ -50,57 +79,75 @@ def caesar(x):
                 result += c
         return result
     except:
-        return "invalid input"
+        return "invalid"
 
 def pig_latin(x):
-    # input: any word → output: pig latin version
+    # converts words to pig latin
     words = str(x).lower().split()
     result = []
     for w in words:
-        vowels = "aeiou"
+        if not w: continue
+        vowels = 'aeiou'
         if w[0] in vowels:
-            result.append(w + "yay")
+            result.append(w + 'yay')
         else:
             i = 0
             while i < len(w) and w[i] not in vowels:
                 i += 1
-            result.append(w[i:] + w[:i] + "ay")
-    return " ".join(result)
+            result.append(w[i:] + w[:i] + 'ay')
+    return ' '.join(result)
+
+def anagram_sort(x):
+    # sorts letters of each word alphabetically then sorts words
+    words = str(x).lower().replace(" ","").split()
+    if not words:
+        words = list(str(x).lower().replace(" ",""))
+        return ''.join(sorted(words))
+    return ' '.join(''.join(sorted(w)) for w in str(x).lower().split())
 
 CHALLENGES = [
-    vowel_count,       # C1 — easy
-    word_reverse,      # C2 — easy
-    char_count,        # C3 — easy
-    binary_to_decimal, # C4 — medium
-    is_palindrome,     # C5 — medium
-    ascii_sum,         # C6 — medium
-    anagram_sort,      # C7 — hard
-    caesar,            # C8 — hard
-    pig_latin,         # C9 — hard
+    double_consonants,   # C1  — easy
+    sum_digits,          # C2  — easy
+    reverse_string,      # C3  — easy
+    count_words,         # C4  — easy
+    alternate_case,      # C5  — easy
+    binary_to_decimal,   # C6  — medium
+    ascii_sum,           # C7  — medium
+    is_palindrome,       # C8  — medium
+    vowel_consonant_swap,# C9  — medium
+    caesar,              # C10 — hard
+    pig_latin,           # C11 — hard
+    anagram_sort,        # C12 — hard
 ]
 
 ANSWERS = {
-    1: "count vowels",
-    2: "reverse words",
-    3: "count characters",
-    4: "binary to decimal",
-    5: "palindrome check",
-    6: "sum of ascii values",
-    7: "anagram sort",
-    8: "caesar cipher",
-    9: "pig latin",
+    1:  "double consonants",
+    2:  "sum of digits",
+    3:  "reverse string",
+    4:  "count words",
+    5:  "alternate case",
+    6:  "binary to decimal",
+    7:  "sum of ascii values",
+    8:  "palindrome check",
+    9:  "vowel consonant swap",
+    10: "caesar cipher",
+    11: "pig latin",
+    12: "anagram sort",
 }
 
 HINTS = {
-    1: 'Input: any word → outputs number of vowels (a,e,i,o,u)',
-    2: 'Input: "hello world" → outputs "world hello"',
-    3: 'Input: any word → outputs total number of characters',
-    4: 'Input: binary string like "1010" → outputs decimal number',
-    5: 'Input: any word → outputs "yes" or "no"',
-    6: 'Input: any word → outputs sum of ASCII value of each letter',
-    7: 'Input: any word → outputs letters sorted A to Z',
-    8: 'Input: "hello,3" → shifts each letter by 3 positions',
-    9: 'Input: any word → outputs pig latin version',
+    1:  "something happens to the consonants in your input",
+    2:  "try inputting numbers with multiple digits",
+    3:  "probe 'hello' and 'world' separately",
+    4:  "try sentences with different number of words",
+    5:  "probe 'hello' — notice the pattern in upper and lower",
+    6:  "try '1010' and '1111' — think in powers of 2",
+    7:  "every character contributes a number — computers know this",
+    8:  "try 'racecar' and 'hello' — what differs in the output",
+    9:  "probe 'hello' — two symbols appear in the output",
+    10: "input needs two parts — probe 'abc,1' and 'abc,2'",
+    11: "words get rearranged — probe single words first",
+    12: "probe 'cat' and 'act' — notice anything about the output",
 }
 
 def get_challenge(chal_id):

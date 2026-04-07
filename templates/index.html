@@ -428,16 +428,19 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
       <div class="card">
         <div class="card-title">PROBE INTERFACE</div>
         <label>SELECT CHALLENGE</label>
-        <div class="challenge-grid" id="challenge-grid">
-          <div class="c-pill active" data-id="1" onclick="selectChallenge(1)">C1<span class="lock-icon">●</span></div>
-          <div class="c-pill locked" data-id="2" onclick="selectChallenge(2)">C2<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="3" onclick="selectChallenge(3)">C3<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="4" onclick="selectChallenge(4)">C4<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="5" onclick="selectChallenge(5)">C5<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="6" onclick="selectChallenge(6)">C6<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="7" onclick="selectChallenge(7)">C7<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="8" onclick="selectChallenge(8)">C8<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="9" onclick="selectChallenge(9)">C9<span class="lock-icon">🔒</span></div>
+        <div class="challenge-grid" id="challenge-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="c-pill active" data-id="1"  onclick="selectChallenge(1)">C1<span class="lock-icon">●</span></div>
+          <div class="c-pill locked" data-id="2"  onclick="selectChallenge(2)">C2<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="3"  onclick="selectChallenge(3)">C3<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="4"  onclick="selectChallenge(4)">C4<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="5"  onclick="selectChallenge(5)">C5<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="6"  onclick="selectChallenge(6)">C6<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="7"  onclick="selectChallenge(7)">C7<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="8"  onclick="selectChallenge(8)">C8<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="9"  onclick="selectChallenge(9)">C9<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="10" onclick="selectChallenge(10)">C10<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="11" onclick="selectChallenge(11)">C11<span class="lock-icon">🔒</span></div>
+          <div class="c-pill locked" data-id="12" onclick="selectChallenge(12)">C12<span class="lock-icon">🔒</span></div>
         </div>
         <div class="hint-box" id="hint-box"></div>
         <label>INPUT VALUE</label>
@@ -472,17 +475,20 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
         <div class="card">
           <div class="card-title">SUBMIT HYPOTHESIS</div>
           <label>CHALLENGE</label>
-          <select id="hypo-challenge">
-            <option value="1">C1 — Easy</option>
-            <option value="2">C2 — Easy</option>
-            <option value="3">C3 — Easy</option>
-            <option value="4">C4 — Medium</option>
-            <option value="5">C5 — Medium</option>
-            <option value="6">C6 — Medium</option>
-            <option value="7">C7 — Hard</option>
-            <option value="8">C8 — Hard</option>
-            <option value="9">C9 — Hard</option>
-          </select>
+         <select id="hypo-challenge">
+  <option value="1">C1</option>
+  <option value="2">C2</option>
+  <option value="3">C3</option>
+  <option value="4">C4</option>
+  <option value="5">C5</option>
+  <option value="6">C6</option>
+  <option value="7">C7</option>
+  <option value="8">C8</option>
+  <option value="9">C9</option>
+  <option value="10">C10</option>
+  <option value="11">C11</option>
+  <option value="12">C12</option>
+</select>
           <label>YOUR DEDUCED ANSWER</label>
           <textarea id="hypo-input" placeholder="e.g. caesar cipher"></textarea>
           <button class="submit-btn" onclick="submitHypo()">⟶ SUBMIT HYPOTHESIS</button>
@@ -546,21 +552,21 @@ async function syncRound() {
 }
 
 function unlockRoundChallenges(round) {
-  const roundMap = { 1: [1], 2: [4], 3: [7] };
-  const startId  = roundMap[round] ? roundMap[round][0] : 1;
+  const roundMap = { 1: 1, 2: 6, 3: 10 };
+  const startId  = roundMap[round];
+  document.querySelectorAll('.c-pill').forEach(p => {
+    p.classList.add('locked');
+    p.querySelector('.lock-icon').textContent = '🔒';
+    p.classList.remove('active');
+  });
   const pill = document.querySelector(`.c-pill[data-id="${startId}"]`);
   if (pill) {
-    document.querySelectorAll('.c-pill').forEach(p => {
-      p.classList.add('locked');
-      p.querySelector('.lock-icon').textContent = '🔒';
-    });
     pill.classList.remove('locked');
     pill.classList.add('active');
     pill.querySelector('.lock-icon').textContent = '●';
     selectedChallenge = startId;
   }
 }
-
 // ── CHALLENGE SELECTION ──
 function selectChallenge(id) {
   const pill = document.querySelector(`.c-pill[data-id="${id}"]`);
@@ -584,8 +590,8 @@ async function loadHint(id) {
 
 function unlockNextChallenge(id) {
   const next = id + 1;
-  if (next > 9) return;
-  const roundEnds = { 1: 3, 2: 6, 3: 9 };
+  if (next > 12) return;
+  const roundEnds = { 1: 5, 2: 9, 3: 12 };
   const roundEnd  = roundEnds[currentRound];
   if (next > roundEnd) return;
   const pill = document.querySelector(`.c-pill[data-id="${next}"]`);
