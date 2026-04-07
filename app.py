@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file, session, redirect
+from flask import Flask, request, jsonify, session, redirect, render_template
 from flask_cors import CORS
 from challenges import get_challenge, CHALLENGES, ROUNDS, ANSWERS, HINTS
 import json, os, re
@@ -10,6 +10,7 @@ app.secret_key = "blackbox_secret_2024"
 ADMIN_PASSWORD = "anveshan2025"
 DATA_FILE = "sessions.json"
 
+# ── LOAD & SAVE DATA ──
 def load_data():
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
@@ -26,6 +27,7 @@ def save_data(d):
 
 data = load_data()
 
+# ── TEAM HANDLING ──
 def get_team(team):
     if team not in data["teams"]:
         data["teams"][team] = {
@@ -39,6 +41,7 @@ def get_team(team):
         }
     return data["teams"][team]
 
+# ── NORMALIZATION ──
 def normalize(s):
     s = s.lower().strip()
     s = re.sub(r'\s+', '', s)
@@ -57,7 +60,7 @@ def normalize(s):
 # ── PAGES ──
 @app.route("/")
 def index():
-    return send_file("index.html")
+    return render_template("index.html")
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
@@ -65,10 +68,12 @@ def admin():
         if request.form.get("password") == ADMIN_PASSWORD:
             session["admin"] = True
             return redirect("/admin")
-        return send_file("login.html"), 401
+        return render_template("login.html"), 401
+
     if not session.get("admin"):
-        return send_file("login.html")
-    return send_file("admin.html")
+        return render_template("login.html")
+
+    return render_template("admin.html")
 
 @app.route("/admin-logout")
 def logout():
@@ -104,9 +109,9 @@ def query():
         })
         save_data(data)
         return jsonify({
-            "output":       result,
+            "output": result,
             "queries_used": t["queries"],
-            "round_queries":t["round_queries"].get(str(rnd), 0)
+            "round_queries": t["round_queries"].get(str(rnd), 0)
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 400
@@ -126,10 +131,6 @@ def submit():
 
     correct_ans = ANSWERS.get(int(chal_id), "")
     is_correct  = normalize(formula) == normalize(correct_ans)
-
-    print(f"INPUT:    '{normalize(formula)}'")
-    print(f"EXPECTED: '{normalize(correct_ans)}'")
-    print(f"MATCH:     {is_correct}")
 
     rnd_queries = t["round_queries"].get(str(rnd), 0)
     score       = (100 if is_correct else 0) - (rnd_queries * 3)
@@ -162,7 +163,7 @@ def submit():
         "expected":      ANSWERS.get(int(chal_id))
     })
 
-# ── ROUND STATUS (for frontend to poll) ──
+# ── ROUND STATUS ──
 @app.route("/api/round")
 def get_round():
     return jsonify({
@@ -242,10 +243,12 @@ def all_sessions():
         return jsonify({"error": "Unauthorized"}), 401
     return jsonify(data)
 
-# ── HINTS (optional, for participants) ──
+# ── HINTS ──
 @app.route("/hint/<int:chal_id>")
 def hint(chal_id):
     return jsonify({"hint": HINTS.get(chal_id, "No hint available")})
 
+# ── RUN APP ──
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
