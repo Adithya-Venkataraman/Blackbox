@@ -1,28 +1,40 @@
 {
   "teams": {
     "team_alpha": {
-      "queries": 8,
+      "queries": 7,
       "history": [
         {
-          "input": "hello,3",
-          "output": "hhellllo,3",
+          "input": "hello",
+          "output": "hhellllo",
           "challenge": 1,
           "round": 1
         },
         {
-          "input": "987",
-          "output": "24",
+          "input": "hi",
+          "output": "hhi",
+          "challenge": 1,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "0",
           "challenge": 2,
           "round": 1
         },
         {
-          "input": "hello world",
-          "output": "dlrow olleh",
+          "input": "98",
+          "output": "17",
+          "challenge": 2,
+          "round": 1
+        },
+        {
+          "input": "98",
+          "output": "89",
           "challenge": 3,
           "round": 1
         },
         {
-          "input": "hello my name is adithya",
+          "input": "hello my name is aditya",
           "output": "5",
           "challenge": 4,
           "round": 1
@@ -32,77 +44,100 @@
           "output": "HeLlO",
           "challenge": 5,
           "round": 1
-        },
-        {
-          "input": "hello",
-          "output": "invalid",
-          "challenge": 6,
-          "round": 2
-        },
-        {
-          "input": "1010",
-          "output": "10",
-          "challenge": 6,
-          "round": 2
-        },
-        {
-          "input": "a",
-          "output": "97",
-          "challenge": 7,
-          "round": 2
         }
       ],
       "hypotheses": {
         "1": {
           "formula": "double consonants",
           "correct": true,
-          "score": 97
-        },
-        "2": {
-          "formula": "sum of digits",
-          "correct": true,
           "score": 94
         },
         "3": {
-          "formula": "reverse string",
-          "correct": true,
-          "score": 91
-        },
-        "4": {
-          "formula": "count words",
-          "correct": true,
-          "score": 88
-        },
-        "5": {
-          "formula": "alternate case",
+          "formula": "reverse words",
           "correct": true,
           "score": 85
         },
-        "6": {
-          "formula": "binary to decimal",
+        "4": {
+          "formula": "count the no of words",
           "correct": true,
-          "score": 94
+          "score": 82
         },
-        "7": {
-          "formula": "sum of ascii values",
+        "5": {
+          "formula": "alternate characters are upper case",
           "correct": true,
-          "score": 91
+          "score": 79
         }
       },
       "scores": {
-        "1": 455,
-        "2": 185,
+        "1": 340,
+        "2": 0,
         "3": 0
       },
       "correct": {
-        "1": 5,
-        "2": 2,
+        "1": 4,
+        "2": 0,
         "3": 0
       },
       "eliminated": false,
       "round_queries": {
-        "1": 5,
-        "2": 3,
+        "1": 7,
+        "2": 0,
+        "3": 0
+      }
+    },
+    "alpha": {
+      "queries": 3,
+      "history": [
+        {
+          "input": "hi",
+          "output": "hhi",
+          "challenge": 1,
+          "round": 1
+        },
+        {
+          "input": "978",
+          "output": "24",
+          "challenge": 2,
+          "round": 1
+        },
+        {
+          "input": "hello world",
+          "output": "dlrow olleh",
+          "challenge": 3,
+          "round": 1
+        }
+      ],
+      "hypotheses": {
+        "1": {
+          "formula": "consonants",
+          "correct": false,
+          "score": -3
+        },
+        "2": {
+          "formula": "digits sum",
+          "correct": true,
+          "score": 94
+        },
+        "3": {
+          "formula": "reversing words",
+          "correct": false,
+          "score": -9
+        }
+      },
+      "scores": {
+        "1": 82,
+        "2": 0,
+        "3": 0
+      },
+      "correct": {
+        "1": 1,
+        "2": 0,
+        "3": 0
+      },
+      "eliminated": false,
+      "round_queries": {
+        "1": 3,
+        "2": 0,
         "3": 0
       }
     }

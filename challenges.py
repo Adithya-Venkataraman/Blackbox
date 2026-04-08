@@ -1,10 +1,10 @@
 ROUNDS = {
-    1: [1, 2, 3, 4, 5],
-    2: [6, 7, 8, 9],
-    3: [10, 11, 12],
+    1: [1, 2, 3, 4, 5],    # 5 easy   — 20 min
+    2: [6, 7, 8, 9],        # 4 medium — 25 min
+    3: [10, 11, 12],        # 3 hard   — 15 min
 }
 
-# ── ROUND 1 — EASY (5 questions) ──
+# ── ROUND 1 — EASY ────────────────────────────────────────────────────────────
 
 def double_consonants(x):
     # doubles every consonant in the word
@@ -35,7 +35,7 @@ def alternate_case(x):
             result += c
     return result
 
-# ── ROUND 2 — MEDIUM (4 questions) ──
+# ── ROUND 2 — MEDIUM ──────────────────────────────────────────────────────────
 
 def binary_to_decimal(x):
     # converts binary string to decimal
@@ -48,22 +48,43 @@ def ascii_sum(x):
     # sums ASCII values of all characters
     return sum(ord(c) for c in str(x))
 
-def is_palindrome(x):
-    # checks if string reads same forwards and backwards
-    s = str(x).lower().replace(" ", "")
-    return "yes" if s == s[::-1] else "no"
+def fizzbuzz(x):
+    # fizzbuzz sequence from 1 to N
+    try:
+        n = int(str(x).strip())
+        if n < 1:
+            return "invalid"
+        result = []
+        for i in range(1, n + 1):
+            if i % 15 == 0:
+                result.append("FizzBuzz")
+            elif i % 3 == 0:
+                result.append("Fizz")
+            elif i % 5 == 0:
+                result.append("Buzz")
+            else:
+                result.append(str(i))
+        return " ".join(result)
+    except:
+        return "invalid"
 
-def vowel_consonant_swap(x):
-    # swaps vowels with * and consonants with #
-    result = ''
-    for c in str(x).lower():
-        if c.isalpha():
-            result += '*' if c in 'aeiou' else '#'
-        else:
-            result += c
-    return result
+def reverse_vowels(x):
+    # reverses only the vowels in place
+    s = list(str(x))
+    vowels = "aeiouAEIOU"
+    i, j = 0, len(s) - 1
+    while i < j:
+        while i < j and s[i] not in vowels:
+            i += 1
+        while i < j and s[j] not in vowels:
+            j -= 1
+        if i < j:
+            s[i], s[j] = s[j], s[i]
+            i += 1
+            j -= 1
+    return "".join(s)
 
-# ── ROUND 3 — HARD (3 questions) ──
+# ── ROUND 3 — HARD ────────────────────────────────────────────────────────────
 
 def caesar(x):
     # caesar cipher with variable shift
@@ -98,12 +119,13 @@ def pig_latin(x):
     return ' '.join(result)
 
 def anagram_sort(x):
-    # sorts letters of each word alphabetically then sorts words
-    words = str(x).lower().replace(" ","").split()
+    # sorts letters of each word alphabetically
+    words = str(x).lower().split()
     if not words:
-        words = list(str(x).lower().replace(" ",""))
-        return ''.join(sorted(words))
-    return ' '.join(''.join(sorted(w)) for w in str(x).lower().split())
+        return ''.join(sorted(str(x).lower().replace(" ","")))
+    return ' '.join(''.join(sorted(w)) for w in words)
+
+# ── REGISTRY ──────────────────────────────────────────────────────────────────
 
 CHALLENGES = [
     double_consonants,   # C1  — easy
@@ -113,13 +135,14 @@ CHALLENGES = [
     alternate_case,      # C5  — easy
     binary_to_decimal,   # C6  — medium
     ascii_sum,           # C7  — medium
-    is_palindrome,       # C8  — medium
-    vowel_consonant_swap,# C9  — medium
+    fizzbuzz,            # C8  — medium
+    reverse_vowels,      # C9  — medium
     caesar,              # C10 — hard
     pig_latin,           # C11 — hard
     anagram_sort,        # C12 — hard
 ]
 
+# Canonical answer labels (used only as fallback display)
 ANSWERS = {
     1:  "double consonants",
     2:  "sum of digits",
@@ -128,11 +151,93 @@ ANSWERS = {
     5:  "alternate case",
     6:  "binary to decimal",
     7:  "sum of ascii values",
-    8:  "palindrome check",
-    9:  "vowel consonant swap",
+    8:  "fizzbuzz",
+    9:  "reverse vowels",
     10: "caesar cipher",
     11: "pig latin",
     12: "anagram sort",
+}
+
+# Keyword sets — any submitted answer containing ALL keywords in ANY group is correct
+ANSWER_KEYWORDS = {
+    1:  [
+            ["double", "consonant"],
+            ["consonant", "twice"],
+            ["repeat", "consonant"],
+            ["consonant", "doubled"],
+        ],
+    2:  [
+            ["sum", "digit"],
+            ["add", "digit"],
+            ["digit", "sum"],
+            ["total", "digit"],
+        ],
+    3:  [
+            ["reverse", "string"],
+            ["reverse", "character"],
+            ["string", "reversed"],
+            ["flip", "string"],
+            ["reverse"], ["reversing"],
+                             # single keyword acceptable for very obvious answers
+        ],
+    4:  [
+            ["count", "word"],
+            ["word", "count"],
+            ["number", "word"],
+            ["no", "word"],
+        ],
+    5:  [
+            ["alternate", "case"],
+            ["alternating", "case"],
+            ["alternate", "upper", "lower"],
+            ["toggle", "case"],
+            ["camel", "alternate"],
+        ],
+    6:  [
+            ["binary", "decimal"],
+            ["binary", "convert"],
+            ["bin", "dec"],
+            ["base", "2", "decimal"],
+            ["binary", "number"],
+        ],
+    7:  [
+            ["ascii", "sum"],
+            ["sum", "ascii"],
+            ["ascii", "value"],
+            ["ascii", "total"],
+            ["ascii", "add"],
+        ],
+    8:  [
+            ["fizzbuzz"],
+            ["fizz", "buzz"],
+            ["fizz buzz"],
+        ],
+    9:  [
+            ["reverse", "vowel"],
+            ["vowel", "reverse"],
+            ["flip", "vowel"],
+            ["vowel", "swap"],
+        ],
+    10: [
+            ["caesar"],
+            ["caesar", "cipher"],
+            ["caesar", "shift"],
+            ["shift", "cipher"],
+            ["letter", "shift"],
+        ],
+    11: [
+            ["pig", "latin"],
+            ["piglatin"],
+            ["pig latin"],
+        ],
+    12: [
+            ["anagram", "sort"],
+            ["sort", "letter"],
+            ["alphabetical", "sort"],
+            ["sort", "anagram"],
+            ["letter", "sort"],
+            ["anagram"],
+        ],
 }
 
 HINTS = {
@@ -143,8 +248,8 @@ HINTS = {
     5:  "probe 'hello' — notice the pattern in upper and lower",
     6:  "try '1010' and '1111' — think in powers of 2",
     7:  "every character contributes a number — computers know this",
-    8:  "try 'racecar' and 'hello' — what differs in the output",
-    9:  "probe 'hello' — two symbols appear in the output",
+    8:  "try numbers like 3, 5, 15 — look for patterns in the output",
+    9:  "probe 'hello' — only certain letters seem to move",
     10: "input needs two parts — probe 'abc,1' and 'abc,2'",
     11: "words get rearranged — probe single words first",
     12: "probe 'cat' and 'act' — notice anything about the output",
