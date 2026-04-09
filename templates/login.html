@@ -98,12 +98,8 @@ button:hover { background: #00cc77; }
     <input type="password" name="password" placeholder="••••••••" autofocus />
     <button type="submit">[ ENTER → ]</button>
   </form>
-  <div class="err" id="err">INVALID ACCESS CODE</div>
+  <div class="err" id="err" {% if error %}style="display:block"{% endif %}>INVALID ACCESS CODE</div>
 </div>
-<script>
-  if (window.location.search.includes('error')) {
-    document.getElementById('err').style.display = 'block';
-  }
-</script>
+<script></script>
 </body>
 </html>

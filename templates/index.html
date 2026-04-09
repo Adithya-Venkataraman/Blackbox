@@ -363,6 +363,7 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
   padding: 6px 20px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 11px;
   color: var(--muted);
   z-index: 100;
@@ -391,6 +392,9 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
 </head>
 <body>
 <div class="wrap">
+<div id="broadcast-banner" style="display:none;background:#1a1000;border:1px solid var(--amber);border-radius:6px;padding:10px 16px;margin-bottom:14px;color:var(--amber);font-size:13px;letter-spacing:0.05em;">
+  <span style="color:var(--amber);margin-right:8px;">📢</span><span id="broadcast-text"></span>
+</div>
 
   <!-- HEADER -->
   <div class="header">
@@ -416,7 +420,12 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
   <div class="card" style="margin-bottom:14px;">
     <div class="card-title">IDENTITY</div>
     <label>TEAM NAME</label>
-    <input id="team" placeholder="e.g. team_alpha" style="margin-bottom:0;" />
+    <input id="team" autocomplete="off" placeholder="e.g. team_alpha" style="margin-bottom:0;" />
+  </div>
+
+  <!-- ROUND STATUS BANNER (shown after START) -->
+  <div id="round-status-banner" style="display:none;background:var(--green-dark);border:1px solid rgba(0,255,100,0.3);border-radius:6px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:var(--green);letter-spacing:0.12em;text-align:center;">
+    🟢 ROUND STARTED — PROBE WISELY
   </div>
 
   <!-- MAIN CONTENT (hidden until START) -->
@@ -428,23 +437,15 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
       <div class="card">
         <div class="card-title">PROBE INTERFACE</div>
         <label>SELECT CHALLENGE</label>
-        <div class="challenge-grid" id="challenge-grid" style="grid-template-columns:repeat(4,1fr);">
-          <div class="c-pill active" data-id="1"  onclick="selectChallenge(1)">C1<span class="lock-icon">●</span></div>
-          <div class="c-pill locked" data-id="2"  onclick="selectChallenge(2)">C2<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="3"  onclick="selectChallenge(3)">C3<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="4"  onclick="selectChallenge(4)">C4<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="5"  onclick="selectChallenge(5)">C5<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="6"  onclick="selectChallenge(6)">C6<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="7"  onclick="selectChallenge(7)">C7<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="8"  onclick="selectChallenge(8)">C8<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="9"  onclick="selectChallenge(9)">C9<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="10" onclick="selectChallenge(10)">C10<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="11" onclick="selectChallenge(11)">C11<span class="lock-icon">🔒</span></div>
-          <div class="c-pill locked" data-id="12" onclick="selectChallenge(12)">C12<span class="lock-icon">🔒</span></div>
+        <div class="challenge-grid" id="challenge-grid" style="grid-template-columns:repeat(5,1fr);">
+          <!-- Pills are rendered dynamically by buildChallengePills() -->
         </div>
         <div class="hint-box" id="hint-box"></div>
         <label>INPUT VALUE</label>
-        <input id="inputval" placeholder="e.g. hello,3" />
+        <input id="inputval" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <div id="freeze-banner" style="display:none;background:#1a0008;border:1px solid var(--red);border-radius:6px;padding:8px 14px;margin-bottom:10px;color:var(--red);font-size:12px;text-align:center;letter-spacing:0.1em;">
+  ⛔ SUBMISSIONS FROZEN BY COORDINATOR
+</div>
         <button class="probe-btn" onclick="probe()">[ PROBE → ]</button>
         <div class="output-terminal">
           <div class="terminal-header">
@@ -460,7 +461,7 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
         <div class="query-progress">
           <div class="progress-header">
             <span>QUERY BUDGET</span>
-            <span id="query-label">0 / 20 used</span>
+            <span id="query-label">0 / 30 used</span>
           </div>
           <div class="progress-track">
             <div class="progress-fill" id="progress-fill" style="width:0%"></div>
@@ -475,22 +476,11 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
         <div class="card">
           <div class="card-title">SUBMIT HYPOTHESIS</div>
           <label>CHALLENGE</label>
-         <select id="hypo-challenge">
-  <option value="1">C1</option>
-  <option value="2">C2</option>
-  <option value="3">C3</option>
-  <option value="4">C4</option>
-  <option value="5">C5</option>
-  <option value="6">C6</option>
-  <option value="7">C7</option>
-  <option value="8">C8</option>
-  <option value="9">C9</option>
-  <option value="10">C10</option>
-  <option value="11">C11</option>
-  <option value="12">C12</option>
+<select id="hypo-challenge">
+  <!-- Populated dynamically by buildChallengePills() -->
 </select>
           <label>YOUR DEDUCED ANSWER</label>
-          <textarea id="hypo-input" placeholder="e.g. caesar cipher"></textarea>
+          <textarea id="hypo-input" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
           <button class="submit-btn" onclick="submitHypo()">⟶ SUBMIT HYPOTHESIS</button>
           <div class="hypo-sent" id="hypo-sent"></div>
         </div>
@@ -515,12 +505,11 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
 
 <!-- STATUS BAR -->
 <div class="status-bar">
-  <div><span class="status-dot"></span>BLACKBOX v1.0 — LOCAL SERVER</div>
-  <div id="status-right">ENTER TEAM NAME AND HIT START</div>
+  <div style="position:absolute;left:50%;transform:translateX(-50%);">Built by Adithya Venkataraman</div>
 </div>
 
 <script>
-const QUERY_LIMIT = 20;
+const QUERY_LIMIT = 30;
 const ROUND_TIMES = { 1: 20, 2: 25, 3: 15 };
 const ROUND_NAMES = {
   1: 'ROUND 1 — QUALIFIER',
@@ -528,15 +517,56 @@ const ROUND_NAMES = {
   3: 'ROUND 3 — GRAND FINAL'
 };
 
-let queriesUsed    = 0;
-let selectedChallenge = 1;
-let history        = [];
-let timerInterval  = null;
-let timerSeconds   = 20 * 60;
-let timerRunning   = false;
-let timerStarted   = false;
-let typingTimeout  = null;
-let currentRound   = 1;
+// Maps round → actual challenge IDs in challenges.py
+const ROUND_CHALLENGE_IDS = {
+  1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  2: [13, 14, 15, 16, 17, 18, 19],
+  3: [20, 21, 22]
+};
+
+let queriesUsed      = 0;
+let selectedChallenge = 1;   // actual backend challenge ID
+let history          = [];
+let timerInterval    = null;
+let timerSeconds     = 20 * 60;
+let timerRunning     = false;
+let timerStarted     = false;
+let typingTimeout    = null;
+let currentRound     = 1;
+
+// ── BUILD PILLS for current round ──
+// Pills always show C1, C2, C3 … (local labels) regardless of round.
+// Internally they map to the actual backend challenge IDs for that round.
+function buildChallengePills(round) {
+  const ids   = ROUND_CHALLENGE_IDS[round] || [];
+  const count = ids.length;
+  const grid  = document.getElementById('challenge-grid');
+  const sel   = document.getElementById('hypo-challenge');
+
+  // Set grid columns: max 5 per row
+  const cols = Math.min(count, 5);
+  grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+  // Build pills
+  grid.innerHTML = ids.map((realId, idx) => {
+    const localLabel = `C${idx + 1}`;
+    const isFirst    = idx === 0;
+    return `<div class="c-pill ${isFirst ? 'active' : 'locked'}"
+                 data-id="${realId}"
+                 onclick="selectChallenge(${realId})">
+              ${localLabel}<span class="lock-icon">${isFirst ? '●' : '🔒'}</span>
+            </div>`;
+  }).join('');
+
+  // Build hypothesis dropdown with local labels
+  sel.innerHTML = ids.map((realId, idx) =>
+    `<option value="${realId}">C${idx + 1}</option>`
+  ).join('');
+
+  // Set first challenge as selected
+  selectedChallenge = ids[0];
+  sel.value = ids[0];
+}
 
 // ── ROUND SYNC ──
 async function syncRound() {
@@ -544,43 +574,29 @@ async function syncRound() {
     const res  = await fetch('/api/round');
     const data = await res.json();
     currentRound = data.round;
+    lastRound    = data.round;   // keep lastRound in sync so pollRound doesn't misfire
     timerSeconds = ROUND_TIMES[currentRound] * 60;
     updateTimerDisplay();
     document.getElementById('round-badge').textContent = ROUND_NAMES[currentRound];
-    unlockRoundChallenges(currentRound);
+    buildChallengePills(currentRound);
+    loadHint(selectedChallenge);
   } catch(e) {}
 }
 
-function unlockRoundChallenges(round) {
-  const roundMap = { 1: 1, 2: 6, 3: 10 };
-  const startId  = roundMap[round];
-  document.querySelectorAll('.c-pill').forEach(p => {
-    p.classList.add('locked');
-    p.querySelector('.lock-icon').textContent = '🔒';
-    p.classList.remove('active');
-  });
-  const pill = document.querySelector(`.c-pill[data-id="${startId}"]`);
-  if (pill) {
-    pill.classList.remove('locked');
-    pill.classList.add('active');
-    pill.querySelector('.lock-icon').textContent = '●';
-    selectedChallenge = startId;
-  }
-}
 // ── CHALLENGE SELECTION ──
-function selectChallenge(id) {
-  const pill = document.querySelector(`.c-pill[data-id="${id}"]`);
-  if (pill.classList.contains('locked')) return;
-  selectedChallenge = id;
+function selectChallenge(realId) {
+  const pill = document.querySelector(`.c-pill[data-id="${realId}"]`);
+  if (!pill || pill.classList.contains('locked')) return;
+  selectedChallenge = realId;
   document.querySelectorAll('.c-pill').forEach(p => p.classList.remove('active'));
   pill.classList.add('active');
-  document.getElementById('hypo-challenge').value = id;
-  loadHint(id);
+  document.getElementById('hypo-challenge').value = realId;
+  loadHint(realId);
 }
 
-async function loadHint(id) {
+async function loadHint(realId) {
   try {
-    const res  = await fetch(`/hint/${id}`);
+    const res  = await fetch(`/hint/${realId}`);
     const data = await res.json();
     const box  = document.getElementById('hint-box');
     box.textContent = '💡 ' + data.hint;
@@ -588,13 +604,13 @@ async function loadHint(id) {
   } catch(e) {}
 }
 
-function unlockNextChallenge(id) {
-  const next = id + 1;
-  if (next > 12) return;
-  const roundEnds = { 1: 5, 2: 9, 3: 12 };
-  const roundEnd  = roundEnds[currentRound];
-  if (next > roundEnd) return;
-  const pill = document.querySelector(`.c-pill[data-id="${next}"]`);
+// Unlock the next pill in this round after a probe
+function unlockNextChallenge(realId) {
+  const ids  = ROUND_CHALLENGE_IDS[currentRound] || [];
+  const idx  = ids.indexOf(realId);
+  if (idx === -1 || idx + 1 >= ids.length) return;
+  const nextId = ids[idx + 1];
+  const pill   = document.querySelector(`.c-pill[data-id="${nextId}"]`);
   if (pill && pill.classList.contains('locked')) {
     pill.classList.remove('locked');
     pill.querySelector('.lock-icon').textContent = '●';
@@ -753,7 +769,8 @@ function toggleTimer() {
     btn.style.opacity    = '0.4';
     btn.style.cursor     = 'not-allowed';
     document.getElementById('main-content').style.display = 'block';
-    setStatus('ROUND STARTED — PROBE WISELY');
+    document.getElementById('round-status-banner').style.display = 'block';
+    setStatus('TIMER RUNNING');
     timerInterval = setInterval(() => {
       timerSeconds--;
       updateTimerDisplay();
@@ -773,6 +790,16 @@ async function pollRound() {
   try {
     const res  = await fetch('/api/round');
     const data = await res.json();
+    // Handle broadcast
+    const banner = document.getElementById('broadcast-banner');
+    if (data.broadcast) {
+      document.getElementById('broadcast-text').textContent = data.broadcast;
+      banner.style.display = 'block';
+    } else { banner.style.display = 'none'; }
+    // Handle freeze
+    const fb = document.getElementById('freeze-banner');
+    if (fb) fb.style.display = data.frozen ? 'block' : 'none';
+
     if (data.round !== lastRound) {
       lastRound    = data.round;
       currentRound = data.round;
@@ -791,7 +818,8 @@ async function pollRound() {
       document.getElementById('btn-start').style.opacity = '1';
       document.getElementById('btn-start').style.cursor  = 'pointer';
       document.getElementById('main-content').style.display = 'none';
-      unlockRoundChallenges(currentRound);
+      document.getElementById('round-status-banner').style.display = 'none';
+      buildChallengePills(currentRound);
 
       // big alert to participant
       setStatus(`ROUND ${currentRound} STARTED — ENTER YOUR NAME AND HIT START`);
@@ -810,7 +838,7 @@ function updateTimerDisplay() {
 }
 
 function setStatus(msg) {
-  document.getElementById('status-right').textContent = msg;
+  // status bar removed
 }
 
 // ── INIT ──

@@ -6,211 +6,397 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --green: #00ff99; --green-dim: #00cc77; --green-dark: #003322;
-  --red: #ff3355; --amber: #ffaa00;
-  --bg: #080b08; --bg2: #0f130f; --border: #1a2a1a;
-  --text: #c8d8c8; --muted: #4a5a4a;
+  --green:#00ff99;--green-dim:#00cc77;--green-dark:#003322;
+  --red:#ff3355;--amber:#ffaa00;--blue:#00aaff;
+  --bg:#080b08;--bg2:#0f130f;--bg3:#161c16;--border:#1a2a1a;
+  --text:#c8d8c8;--muted:#4a5a4a;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Share Tech Mono', monospace; padding: 24px 16px 60px; }
-.wrap { max-width: 700px; margin: 0 auto; }
-.title { font-family: 'Orbitron', monospace; font-size: 28px; font-weight: 900; color: var(--green); letter-spacing: 0.15em; margin-bottom: 4px; }
-.sub { color: var(--muted); font-size: 12px; letter-spacing: 0.15em; margin-bottom: 28px; }
-.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px; position: relative; overflow: hidden; }
-.card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--green), transparent); opacity: 0.3; }
-.card-title { font-size: 10px; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 14px; }
-.card-title::before { content: '// '; color: var(--green); opacity: 0.5; }
-label { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; display: block; margin-bottom: 5px; }
-input { background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 14px; padding: 9px 12px; border-radius: 5px; outline: none; transition: border-color 0.2s; }
-input:focus { border-color: rgba(0,255,100,0.4); }
-.add-row { display: grid; grid-template-columns: 1fr 80px 80px auto; gap: 8px; align-items: end; margin-bottom: 20px; }
-.add-row input { width: 100%; }
-.add-btn { background: var(--green); color: #000; border: none; font-family: 'Share Tech Mono', monospace; font-size: 13px; padding: 10px 16px; border-radius: 5px; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
-.add-btn:hover { background: var(--green-dim); }
-.del-btn { background: transparent; border: 1px solid var(--red); color: var(--red); font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
-.del-btn:hover { background: rgba(255,50,80,0.1); }
-.lb-row { display: grid; grid-template-columns: 32px 1fr 70px 70px 40px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; align-items: center; gap: 8px; }
-.lb-row.header-row { color: var(--muted); font-size: 10px; letter-spacing: 0.1em; padding-bottom: 10px; }
-.lb-rank { font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700; text-align: center; }
-.gold { color: #ffd700; } .silver { color: #c0c0c0; } .bronze { color: #cd7f32; } .other { color: var(--muted); }
-.lb-score { color: var(--green); font-weight: bold; text-align: right; }
-.lb-queries { color: var(--muted); font-size: 12px; text-align: right; }
-.lb-empty { color: var(--muted); font-size: 12px; padding: 20px 0; text-align: center; }
-.sessions-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.sessions-table th { color: var(--muted); text-align: left; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 10px; letter-spacing: 0.1em; }
-.sessions-table td { padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
-.sessions-table td:last-child { color: var(--muted); font-size: 11px; }
-.badge { font-size: 10px; padding: 2px 6px; border-radius: 3px; background: var(--green-dark); color: var(--green); display: inline-block; margin-right: 4px; }
-.refresh-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 5px 12px; border-radius: 4px; cursor: pointer; transition: all 0.15s; margin-left: 10px; }
-.refresh-btn:hover { border-color: var(--green); color: var(--green); }
-.status-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg2); border-top: 1px solid var(--border); padding: 6px 20px; display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); z-index: 100; }
-.status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); margin-right: 6px; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Share Tech Mono',monospace;padding:20px 16px 70px;}
+.wrap{max-width:860px;margin:0 auto;}
+.title{font-family:'Orbitron',monospace;font-size:26px;font-weight:900;color:var(--green);letter-spacing:.15em;}
+.sub{color:var(--muted);font-size:11px;letter-spacing:.15em;margin-bottom:24px;margin-top:2px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr;}}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.3;}
+.card-title{font-size:10px;letter-spacing:.2em;color:var(--muted);margin-bottom:14px;}
+.card-title::before{content:'// ';color:var(--green);opacity:.5;}
+label{font-size:11px;color:var(--muted);letter-spacing:.1em;display:block;margin-bottom:5px;}
+input,select{background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:13px;padding:8px 10px;border-radius:5px;outline:none;width:100%;transition:border-color .2s;margin-bottom:8px;}
+input:focus,select:focus{border-color:rgba(0,255,100,.4);}
+textarea{background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:13px;padding:8px 10px;border-radius:5px;outline:none;width:100%;resize:vertical;min-height:56px;transition:border-color .2s;}
+textarea:focus{border-color:rgba(0,255,100,.4);}
+.btn{border:none;font-family:'Share Tech Mono',monospace;font-size:12px;padding:9px 14px;border-radius:5px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn-green{background:var(--green);color:#000;}.btn-green:hover{background:var(--green-dim);}
+.btn-amber{background:var(--amber);color:#000;}.btn-amber:hover{background:#cc8800;}
+.btn-red{background:transparent;border:1px solid var(--red);color:var(--red);}.btn-red:hover{background:rgba(255,50,80,.1);}
+.btn-blue{background:var(--blue);color:#000;}.btn-blue:hover{background:#0088cc;}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--green);color:var(--green);}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;}
+
+/* Stat boxes */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:600px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:14px 10px;text-align:center;}
+.stat-val{font-family:'Orbitron',monospace;font-size:22px;font-weight:700;color:var(--green);}
+.stat-lbl{font-size:10px;color:var(--muted);letter-spacing:.1em;margin-top:4px;}
+
+/* Standings table */
+.s-table{width:100%;border-collapse:collapse;font-size:12px;}
+.s-table th{color:var(--muted);text-align:left;padding:6px 4px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:.1em;}
+.s-table td{padding:7px 4px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.rank{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;text-align:center;}
+.gold{color:#ffd700;}.silver{color:#c0c0c0;}.bronze{color:#cd7f32;}.other{color:var(--muted);}
+.score-val{color:var(--green);font-weight:bold;}
+.elim-row{opacity:.35;}
+.badge{font-size:10px;padding:2px 6px;border-radius:3px;background:var(--green-dark);color:var(--green);display:inline-block;margin:1px;}
+.badge-red{background:#1a0008;color:var(--red);}
+
+/* Probe feed */
+.feed{max-height:240px;overflow-y:auto;font-size:12px;}
+.feed::-webkit-scrollbar{width:3px;}
+.feed::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.feed-row{display:grid;grid-template-columns:70px 80px 1fr 1fr 60px;padding:6px 0;border-bottom:1px solid var(--border);align-items:center;gap:6px;}
+.feed-row.hdr{color:var(--muted);font-size:10px;letter-spacing:.08em;}
+.out-val{color:var(--green);}
+
+/* Heat map */
+.heat-grid{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;}
+.heat-cell{border-radius:3px;padding:6px 2px;text-align:center;font-size:10px;background:var(--bg3);color:var(--muted);transition:all .3s;}
+.heat-cell.hot{color:#000;}
+
+/* Broadcast */
+.bc-preview{background:var(--bg);border:1px solid var(--amber);border-radius:5px;padding:8px 12px;font-size:12px;color:var(--amber);margin-top:8px;display:none;}
+
+/* Status */
+.status-bar{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);padding:6px 20px;display:flex;justify-content:space-between;font-size:11px;color:var(--muted);z-index:100;}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;animation:pulse 2s infinite;}
+.dot-green{background:var(--green);}
+.dot-amber{background:var(--amber);}
+.dot-red{background:var(--red);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.freeze-indicator{font-size:11px;padding:4px 10px;border-radius:4px;display:inline-block;}
+.freeze-on{background:#1a0008;color:var(--red);border:1px solid var(--red);}
+.freeze-off{background:var(--green-dark);color:var(--green);border:1px solid rgba(0,255,100,.3);}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <div class="title">BLACKBOX</div>
-  <div class="sub">// COORDINATOR PANEL — DO NOT SHARE THIS URL //</div>
+  <div class="sub">// COORDINATOR PANEL — ROUND <span id="hdr-round">—</span> · <span id="hdr-status">LIVE</span> · <a href="/admin-logout" style="color:var(--muted);text-decoration:none;">LOGOUT</a> //</div>
 
-  <!-- ROUND CONTROL -->
-  <div class="card">
-    <div class="card-title">ROUND CONTROL</div>
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
-      <div>
-        <div class="timer-label">CURRENT ROUND</div>
-        <div style="font-family:'Orbitron',monospace;font-size:28px;font-weight:700;color:var(--green)" id="round-display">—</div>
+  <!-- STAT BOXES -->
+  <div class="stat-grid">
+    <div class="stat-box"><div class="stat-val" id="stat-round">—</div><div class="stat-lbl">CURRENT ROUND</div></div>
+    <div class="stat-box"><div class="stat-val" id="stat-teams">—</div><div class="stat-lbl">ACTIVE TEAMS</div></div>
+    <div class="stat-box"><div class="stat-val" id="stat-probes">—</div><div class="stat-lbl">TOTAL PROBES</div></div>
+    <div class="stat-box"><div class="stat-val" id="stat-correct">—</div><div class="stat-lbl">CORRECT ANSWERS</div></div>
+  </div>
+
+  <div class="grid2">
+    <!-- ROUND CONTROL -->
+    <div class="card">
+      <div class="card-title">ROUND CONTROL</div>
+      <div class="row">
+        <button class="btn btn-amber" id="btn-end" onclick="endRound()">END ROUND</button>
+        <button class="btn btn-green" id="btn-next" onclick="nextRound()" disabled>NEXT ROUND →</button>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="add-btn" onclick="nextRound()">NEXT ROUND →</button>
+      <div class="row">
+        <button class="btn btn-red" id="btn-freeze" onclick="toggleFreeze()">⛔ FREEZE ALL</button>
+        <span class="freeze-indicator freeze-off" id="freeze-label">SUBMISSIONS OPEN</span>
       </div>
-    </div>
-  </div>
-
-  <!-- STANDINGS + ELIMINATION -->
-  <div class="card">
-  <div class="card-title">ROUND CONTROL</div>
-  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
-    <div>
-      <div class="timer-label">CURRENT ROUND</div>
-      <div style="font-family:'Orbitron',monospace;font-size:28px;font-weight:700;color:var(--green)" id="round-display">—</div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="add-btn" id="btn-end-round"
-              style="background:var(--amber);color:#000;"
-              onclick="endRound()">END ROUND</button>
-      <button class="add-btn" id="btn-next-round"
-              style="opacity:0.4;"
-              disabled onclick="nextRound()">NEXT ROUND →</button>
-    </div>
-  </div>
-</div>
-
-  <!-- LIVE SESSIONS -->
-  <div class="card">
-    <div class="card-title">
-      LIVE SESSION DATA
-      <button class="refresh-btn" onclick="loadSessions()">↻ REFRESH</button>
-    </div>
-    <table class="sessions-table">
-      <thead>
-        <tr><th>TEAM</th><th>QUERIES</th><th>LAST 3 PROBES</th></tr>
-      </thead>
-      <tbody id="sessions-body">
-        <tr><td colspan="3" style="color:var(--muted);padding:16px 0;">Loading...</td></tr>
-      </tbody>
-    </table>
-  </div>
-<script>
-async function loadStandings() {
-  const res  = await fetch('/api/standings');
-  const data = await res.json();
-  document.getElementById('round-display').textContent = `ROUND ${data.round}`;
-
-  const endBtn  = document.getElementById('btn-end-round');
-  const nextBtn = document.getElementById('btn-next-round');
-
-  if (data.round_ended) {
-    endBtn.textContent  = '✓ ROUND ENDED';
-    endBtn.disabled     = true;
-    endBtn.style.opacity = '0.4';
-    nextBtn.disabled    = false;
-    nextBtn.style.opacity = '1';
-  } else {
-    endBtn.textContent  = 'END ROUND';
-    endBtn.disabled     = false;
-    endBtn.style.opacity = '1';
-    nextBtn.disabled    = true;
-    nextBtn.style.opacity = '0.4';
-  }
-
-  const ranks  = ['gold','silver','bronze'];
-  const active = data.teams.filter(t => !t.eliminated);
-  const elimed = data.teams.filter(t => t.eliminated);
-  const all    = [...active, ...elimed];
-
-  if (all.length === 0) {
-    document.getElementById('standings-list').innerHTML = `
-      <div class="lb-row header-row"><div>#</div><div>TEAM</div><div>SCORE</div><div>CORRECT</div><div>QUERIES</div><div>STATUS</div></div>
-      <div class="lb-empty">No teams yet</div>`;
-    return;
-  }
-
-  document.getElementById('standings-list').innerHTML = `
-    <div class="lb-row header-row" style="grid-template-columns:32px 1fr 70px 70px 70px 90px;">
-      <div>#</div><div>TEAM</div><div>SCORE</div><div>CORRECT</div><div>QUERIES</div><div>STATUS</div>
-    </div>
-    ${all.map((t,i) => `
-      <div class="lb-row" style="grid-template-columns:32px 1fr 70px 70px 70px 90px;opacity:${t.eliminated?0.4:1}">
-        <div class="lb-rank ${t.eliminated?'other':ranks[i]||'other'}">${t.eliminated?'✕':i+1}</div>
-        <div>${t.team}</div>
-        <div class="lb-score">${t.round_score}</div>
-        <div style="text-align:right;color:var(--green)">${t.correct}</div>
-        <div class="lb-queries">${t.queries}</div>
-        <div style="font-size:11px;color:${t.eliminated?'var(--red)':'var(--green)'}">
-          ${t.eliminated ? 'ELIMINATED' : 'ACTIVE'}
+      <div style="margin-top:6px;">
+        <label>ELIMINATE BOTTOM N TEAMS</label>
+        <div class="row">
+          <input type="number" id="elim-n" value="1" min="1" style="width:70px;margin-bottom:0;">
+          <button class="btn btn-red" onclick="eliminateTeams()">ELIMINATE</button>
         </div>
       </div>
-    `).join('')}`;
+    </div>
+
+    <!-- BROADCAST -->
+    <div class="card">
+      <div class="card-title">BROADCAST MESSAGE</div>
+      <label>MESSAGE TO ALL PARTICIPANTS</label>
+      <textarea id="bc-msg" placeholder="e.g. 5 minutes remaining in this round..."></textarea>
+      <div class="row">
+        <button class="btn btn-blue" onclick="sendBroadcast()">📢 BROADCAST</button>
+        <button class="btn btn-ghost" onclick="clearBroadcast()">CLEAR</button>
+      </div>
+      <div class="bc-preview" id="bc-preview"></div>
+    </div>
+  </div>
+
+  <!-- STANDINGS -->
+  <div class="card">
+    <div class="card-title">
+      LIVE STANDINGS
+      <button class="btn btn-ghost" style="font-size:10px;padding:4px 10px;margin-left:10px;" onclick="loadStandings()">↻</button>
+      <a href="/api/export-csv" style="margin-left:8px;" class="btn btn-ghost" style="font-size:10px;padding:4px 10px;">⬇ CSV</a>
+    </div>
+    <div id="standings-wrap">
+      <table class="s-table">
+        <thead><tr>
+          <th style="width:32px">#</th>
+          <th>TEAM</th>
+          <th>R1</th><th>R2</th><th>R3</th>
+          <th>TOTAL</th>
+          <th>CORRECT</th>
+          <th>QUERIES</th>
+          <th>STATUS</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="standings-body"><tr><td colspan="10" style="color:var(--muted);padding:16px 0;">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CHALLENGE HEAT MAP -->
+  <div class="card">
+    <div class="card-title">CHALLENGE PROBE HEAT MAP</div>
+    <div class="heat-grid" id="heat-grid"></div>
+  </div>
+
+  <!-- LIVE PROBE FEED -->
+  <div class="card">
+    <div class="card-title">
+      LIVE PROBE FEED (ALL TEAMS)
+      <button class="btn btn-ghost" style="font-size:10px;padding:4px 10px;margin-left:10px;" onclick="loadFeed()">↻</button>
+    </div>
+    <div class="feed">
+      <div class="feed-row hdr"><div>TIME</div><div>TEAM</div><div>C#</div><div>INPUT → OUTPUT</div><div>ROUND</div></div>
+      <div id="feed-body"><div style="color:var(--muted);padding:12px 0;">Loading...</div></div>
+    </div>
+  </div>
+
+  <!-- TEAM DETAILS -->
+  <div class="card">
+    <div class="card-title">TEAM DRILL-DOWN</div>
+    <div class="row">
+      <select id="team-select" style="width:200px;margin-bottom:0;" onchange="loadTeamDetail()"><option value="">— select team —</option></select>
+      <button class="btn btn-ghost" onclick="resetTeam()">RESET TEAM</button>
+    </div>
+    <div id="team-detail" style="margin-top:12px;font-size:12px;color:var(--muted);">Select a team above to see their full probe history.</div>
+  </div>
+
+</div>
+
+<div class="status-bar">
+  <div><span class="dot dot-green"></span>BLACKBOX ADMIN · AUTO-REFRESH 10s</div>
+  <div id="status-right">—</div>
+</div>
+
+<script>
+let isFrozen = false;
+
+// ── STANDINGS ──────────────────────────────────────────────────────────────
+async function loadStandings() {
+  const res  = await fetch('/api/standings');
+  const d    = await res.json();
+  if (d.error) return;
+
+  isFrozen = d.frozen;
+  document.getElementById('stat-round').textContent  = d.round;
+  document.getElementById('hdr-round').textContent   = d.round;
+  document.getElementById('hdr-status').textContent  = d.round_ended ? 'ENDED' : 'LIVE';
+  document.getElementById('freeze-label').textContent = d.frozen ? 'FROZEN' : 'SUBMISSIONS OPEN';
+  document.getElementById('freeze-label').className  = 'freeze-indicator ' + (d.frozen ? 'freeze-on' : 'freeze-off');
+  document.getElementById('btn-freeze').textContent  = d.frozen ? '✓ UNFREEZE' : '⛔ FREEZE ALL';
+
+  const endBtn  = document.getElementById('btn-end');
+  const nextBtn = document.getElementById('btn-next');
+  if (d.round_ended) {
+    endBtn.textContent = '✓ ENDED'; endBtn.disabled = true;
+    nextBtn.disabled = false;
+  } else {
+    endBtn.textContent = 'END ROUND'; endBtn.disabled = false;
+    nextBtn.disabled = true;
+  }
+
+  const active = d.teams.filter(t => !t.eliminated);
+  const elimed = d.teams.filter(t => t.eliminated);
+  document.getElementById('stat-teams').textContent = active.length;
+
+  const ranks = ['gold','silver','bronze'];
+  const all   = [...d.teams];
+  document.getElementById('standings-body').innerHTML = all.length === 0
+    ? '<tr><td colspan="10" style="color:var(--muted);padding:16px 0;">No teams yet</td></tr>'
+    : all.map((t, i) => `
+      <tr class="${t.eliminated ? 'elim-row' : ''}">
+        <td><span class="rank ${t.eliminated ? 'other' : (ranks[i] || 'other')}">${t.eliminated ? '✕' : i+1}</span></td>
+        <td>${t.team}</td>
+        <td class="score-val">${t.scores?.['1'] ?? t.round_score ?? 0}</td>
+        <td class="score-val">${t.scores?.['2'] ?? 0}</td>
+        <td class="score-val">${t.scores?.['3'] ?? 0}</td>
+        <td style="color:var(--amber);font-weight:bold;">${t.cumulative ?? t.round_score}</td>
+        <td style="color:var(--green)">${t.correct}</td>
+        <td style="color:var(--muted)">${t.queries}</td>
+        <td style="font-size:11px;color:${t.eliminated ? 'var(--red)' : 'var(--green)'};">${t.eliminated ? 'ELIM' : 'ACTIVE'}</td>
+        <td><button class="btn btn-ghost" style="font-size:10px;padding:3px 7px;" onclick="drillTeam('${t.team}')">VIEW</button></td>
+      </tr>`).join('');
 
   document.getElementById('status-right').textContent =
-    `${active.length} ACTIVE · ${elimed.length} ELIMINATED · ROUND ${data.round} ${data.round_ended ? '(ENDED)' : '(LIVE)'}`;
+    `${active.length} ACTIVE · ${elimed.length} ELIM · R${d.round} ${d.round_ended ? '(ENDED)' : '(LIVE)'} · ${new Date().toLocaleTimeString()}`;
+
+  // populate team select
+  const sel = document.getElementById('team-select');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— select team —</option>' +
+    d.teams.map(t => `<option value="${t.team}" ${t.team===cur?'selected':''}>${t.team}</option>`).join('');
 }
 
+// ── FEED + HEAT MAP ────────────────────────────────────────────────────────
+async function loadFeed() {
+  const res  = await fetch('/all-sessions');
+  const d    = await res.json();
+  const teams = Object.entries(d.teams || {});
+
+  // flatten all history
+  const all = [];
+  let totalProbes = 0, totalCorrect = 0;
+  const chalCounts = {};
+  for (const [name, t] of teams) {
+    totalProbes += t.queries || 0;
+    for (const r of [1,2,3]) totalCorrect += t.correct?.[r] || 0;
+    for (const h of (t.history || [])) {
+      all.push({team: name, ...h});
+      chalCounts[h.challenge] = (chalCounts[h.challenge] || 0) + 1;
+    }
+  }
+  document.getElementById('stat-probes').textContent  = totalProbes;
+  document.getElementById('stat-correct').textContent = totalCorrect;
+
+  all.sort((a,b) => 0); // keep insertion order (server appends)
+  const recent = all.slice(-50).reverse();
+
+  document.getElementById('feed-body').innerHTML = recent.length === 0
+    ? '<div style="color:var(--muted);padding:12px 0;">No probes yet</div>'
+    : recent.map(h => `
+      <div class="feed-row">
+        <div style="color:var(--muted)">${h.time || '—'}</div>
+        <div>${h.team}</div>
+        <div><span class="badge">C${h.challenge}</span></div>
+        <div>${h.input} → <span class="out-val">${h.output}</span></div>
+        <div style="color:var(--muted)">R${h.round}</div>
+      </div>`).join('');
+
+  // Heat map — C1 to C22
+  const maxCount = Math.max(1, ...Object.values(chalCounts));
+  document.getElementById('heat-grid').innerHTML = Array.from({length:22},(_,i)=>i+1).map(c => {
+    const cnt = chalCounts[c] || 0;
+    const pct = cnt / maxCount;
+    const g   = Math.round(20 + pct * 180);
+    const bg  = cnt > 0 ? `rgb(0,${g},${Math.round(g*0.4)})` : '';
+    return `<div class="heat-cell ${cnt>0?'hot':''}" style="background:${bg};color:${cnt>0?'#000':''};" title="C${c}: ${cnt} probes">
+      <div>C${c}</div><div style="font-size:9px;">${cnt}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── TEAM DETAIL ────────────────────────────────────────────────────────────
+function drillTeam(name) {
+  document.getElementById('team-select').value = name;
+  loadTeamDetail();
+}
+
+async function loadTeamDetail() {
+  const name = document.getElementById('team-select').value;
+  const el   = document.getElementById('team-detail');
+  if (!name) { el.innerHTML = 'Select a team above.'; return; }
+
+  const res  = await fetch('/all-sessions');
+  const d    = await res.json();
+  const t    = d.teams[name];
+  if (!t) { el.innerHTML = 'Team not found.'; return; }
+
+  const history = (t.history || []).slice(-30).reverse();
+  const hypos   = t.hypotheses || {};
+
+  el.innerHTML = `
+    <div style="margin-bottom:10px;display:flex;gap:16px;flex-wrap:wrap;">
+      <span>Queries: <strong style="color:var(--green)">${t.queries}</strong></span>
+      <span>R1: <strong style="color:var(--green)">${t.scores?.['1']||0}</strong></span>
+      <span>R2: <strong style="color:var(--green)">${t.scores?.['2']||0}</strong></span>
+      <span>R3: <strong style="color:var(--green)">${t.scores?.['3']||0}</strong></span>
+      <span>Status: <strong style="color:${t.eliminated?'var(--red)':'var(--green)'}">${t.eliminated?'ELIMINATED':'ACTIVE'}</strong></span>
+    </div>
+    <div style="margin-bottom:8px;font-size:10px;color:var(--muted);letter-spacing:.1em;">SUBMITTED HYPOTHESES</div>
+    <div style="margin-bottom:12px;">${Object.entries(hypos).length === 0 ? '<span style="color:var(--muted)">None yet</span>' :
+      Object.entries(hypos).map(([c,h]) =>
+        `<span class="badge ${h.correct?'':'badge-red'}">C${c}: ${h.formula} ${h.correct?'✓':'✕'}</span>`
+      ).join('')}
+    </div>
+    <div style="font-size:10px;color:var(--muted);letter-spacing:.1em;margin-bottom:6px;">LAST 30 PROBES</div>
+    ${history.map(h=>`
+      <div class="feed-row" style="grid-template-columns:70px 60px 1fr 1fr 50px;">
+        <div style="color:var(--muted)">${h.time||'—'}</div>
+        <div><span class="badge">C${h.challenge}</span></div>
+        <div>${h.input}</div>
+        <div class="out-val">${h.output}</div>
+        <div style="color:var(--muted)">R${h.round}</div>
+      </div>`).join('')}`;
+}
+
+async function resetTeam() {
+  const name = document.getElementById('team-select').value;
+  if (!name || !confirm(`Reset ALL data for ${name}?`)) return;
+  await fetch('/api/reset-team', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({team:name})});
+  loadStandings(); loadFeed();
+  document.getElementById('team-detail').innerHTML = 'Team reset.';
+}
+
+// ── ROUND CONTROL ──────────────────────────────────────────────────────────
 async function endRound() {
-  if (!confirm('End this round? Participants will not be able to submit after this.')) return;
-  await fetch('/api/end-round', { method: 'POST' });
-  loadStandings();
-}
-
-async function eliminateTeams() {
-  const n   = parseInt(document.getElementById('elim-n').value) || 1;
-  const res = await fetch('/api/eliminate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ bottom_n: n })
-  });
-  const data = await res.json();
-  alert(`ELIMINATED: ${data.eliminated.join(', ')}`);
+  if (!confirm('End this round? Teams cannot submit after this.')) return;
+  await fetch('/api/end-round', {method:'POST'});
   loadStandings();
 }
 
 async function nextRound() {
-  if (!confirm('Move all surviving teams to next round?')) return;
-  const res  = await fetch('/api/next-round', { method: 'POST' });
-  const data = await res.json();
-  if (data.error) { alert(data.error); return; }
-  document.getElementById('round-display').textContent = `ROUND ${data.round}`;
+  if (!confirm('Advance all surviving teams to next round?')) return;
+  const res = await fetch('/api/next-round', {method:'POST'});
+  const d   = await res.json();
+  if (d.error) { alert(d.error); return; }
   loadStandings();
 }
 
-async function loadSessions() {
-  const res   = await fetch('/all-sessions');
-  const data  = await res.json();
-  const teams = Object.keys(data.teams || {});
-  const tbody = document.getElementById('sessions-body');
-  if (teams.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="3" style="color:var(--muted);padding:16px 0;">No probes yet</td></tr>';
-    return;
-  }
-  tbody.innerHTML = teams.map(team => {
-    const t     = data.teams[team];
-    const last3 = (t.history || []).slice(-3).reverse().map(h =>
-      `<span class="badge">C${h.challenge}</span>${h.input}→${h.output}`
-    ).join('  ');
-    return `<tr>
-      <td>${team}</td>
-      <td>${t.queries}</td>
-      <td>${last3 || '—'}</td>
-    </tr>`;
-  }).join('');
+async function eliminateTeams() {
+  const n = parseInt(document.getElementById('elim-n').value) || 1;
+  if (!confirm(`Eliminate bottom ${n} team(s)?`)) return;
+  const res = await fetch('/api/eliminate', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({bottom_n:n})});
+  const d   = await res.json();
+  alert(`ELIMINATED: ${d.eliminated.join(', ') || 'none'}`);
+  loadStandings();
 }
 
+async function toggleFreeze() {
+  await fetch('/api/freeze', {method:'POST'});
+  loadStandings();
+}
+
+// ── BROADCAST ──────────────────────────────────────────────────────────────
+async function sendBroadcast() {
+  const msg = document.getElementById('bc-msg').value.trim();
+  await fetch('/api/broadcast', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg})});
+  const prev = document.getElementById('bc-preview');
+  prev.textContent = '📢 LIVE: ' + msg;
+  prev.style.display = msg ? 'block' : 'none';
+}
+
+async function clearBroadcast() {
+  document.getElementById('bc-msg').value = '';
+  await fetch('/api/broadcast', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:''})});
+  document.getElementById('bc-preview').style.display = 'none';
+}
+
+// ── INIT & POLLING ─────────────────────────────────────────────────────────
 loadStandings();
-loadSessions();
+loadFeed();
 setInterval(loadStandings, 10000);
-setInterval(loadSessions, 10000);
+setInterval(loadFeed, 10000);
 </script>
 </body>
 </html>

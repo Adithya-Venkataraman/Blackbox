@@ -1,0 +1,344 @@
+{
+  "teams": {
+    "team_alpha": {
+      "queries": 30,
+      "history": [
+        {
+          "input": "hello",
+          "output": "2",
+          "challenge": 1,
+          "round": 1
+        },
+        {
+          "input": "hello",
+          "output": "olleh",
+          "challenge": 2,
+          "round": 1
+        },
+        {
+          "input": "hello mate",
+          "output": "9",
+          "challenge": 3,
+          "round": 1
+        },
+        {
+          "input": "hello my name is ash",
+          "output": "5",
+          "challenge": 4,
+          "round": 1
+        },
+        {
+          "input": "hello",
+          "output": "Hello",
+          "challenge": 5,
+          "round": 1
+        },
+        {
+          "input": "hello",
+          "output": "0",
+          "challenge": 6,
+          "round": 1
+        },
+        {
+          "input": "123",
+          "output": "6",
+          "challenge": 6,
+          "round": 1
+        },
+        {
+          "input": "consonants",
+          "output": "7",
+          "challenge": 7,
+          "round": 1
+        },
+        {
+          "input": "hello,mate",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "hello, mate",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "hello,",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "hello,",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "hello,hello",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "hello hello",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "4",
+          "output": "even",
+          "challenge": 9,
+          "round": 1
+        },
+        {
+          "input": "7",
+          "output": "odd",
+          "challenge": 9,
+          "round": 1
+        },
+        {
+          "input": "lmao",
+          "output": "LMAO",
+          "challenge": 10,
+          "round": 1
+        },
+        {
+          "input": "lmao",
+          "output": "lmao",
+          "challenge": 11,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "hi",
+          "challenge": 11,
+          "round": 1
+        },
+        {
+          "input": "hi hello",
+          "output": "hihello",
+          "challenge": 11,
+          "round": 1
+        },
+        {
+          "input": "hi hello",
+          "output": "ho",
+          "challenge": 12,
+          "round": 1
+        },
+        {
+          "input": "hi hello",
+          "output": "ho",
+          "challenge": 12,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "invalid",
+          "challenge": 13,
+          "round": 2
+        },
+        {
+          "input": "hi hello",
+          "output": "invalid",
+          "challenge": 13,
+          "round": 2
+        },
+        {
+          "input": "8",
+          "output": "invalid",
+          "challenge": 13,
+          "round": 2
+        },
+        {
+          "input": "1001",
+          "output": "9",
+          "challenge": 13,
+          "round": 2
+        },
+        {
+          "input": "a",
+          "output": "97",
+          "challenge": 14,
+          "round": 2
+        },
+        {
+          "input": "3,5,15",
+          "output": "invalid",
+          "challenge": 15,
+          "round": 2
+        },
+        {
+          "input": "3",
+          "output": "1 2 Fizz",
+          "challenge": 15,
+          "round": 2
+        },
+        {
+          "input": "5",
+          "output": "1 2 Fizz 4 Buzz",
+          "challenge": 15,
+          "round": 2
+        }
+      ],
+      "hypotheses": {
+        "1": {
+          "formula": "count vowels",
+          "correct": true,
+          "score": 97
+        },
+        "2": {
+          "formula": "reverse string",
+          "correct": true,
+          "score": 94
+        },
+        "3": {
+          "formula": "count the no of characters",
+          "correct": true,
+          "score": 91
+        },
+        "4": {
+          "formula": "no of words counted",
+          "correct": true,
+          "score": 88
+        },
+        "5": {
+          "formula": "make first letter as uppercase",
+          "correct": false,
+          "score": -15
+        },
+        "6": {
+          "formula": "calculate the digits sum",
+          "correct": true,
+          "score": 79
+        },
+        "7": {
+          "formula": "we count the no of consonants",
+          "correct": true,
+          "score": 76
+        },
+        "9": {
+          "formula": "calculate whether a number is odd or even",
+          "correct": true,
+          "score": 52
+        },
+        "10": {
+          "formula": "converts all characters to capital or uppercase",
+          "correct": true,
+          "score": 49
+        },
+        "11": {
+          "formula": "it removes whitespaces",
+          "correct": true,
+          "score": 40
+        },
+        "12": {
+          "formula": "yes",
+          "correct": false,
+          "score": -66
+        },
+        "13": {
+          "formula": "binary to decimal conv",
+          "correct": true,
+          "score": 88
+        },
+        "14": {
+          "formula": "ascii value",
+          "correct": true,
+          "score": 85
+        }
+      },
+      "scores": {
+        "1": 585,
+        "2": 173,
+        "3": 0
+      },
+      "correct": {
+        "1": 9,
+        "2": 2,
+        "3": 0
+      },
+      "eliminated": false,
+      "round_queries": {
+        "1": 22,
+        "2": 8,
+        "3": 0
+      }
+    },
+    "team_beta": {
+      "queries": 1,
+      "history": [
+        {
+          "input": "hello",
+          "output": "2",
+          "challenge": 1,
+          "round": 1
+        }
+      ],
+      "hypotheses": {
+        "1": {
+          "formula": "count the no of vowels",
+          "correct": true,
+          "score": 97
+        }
+      },
+      "scores": {
+        "1": 97,
+        "2": 0,
+        "3": 0
+      },
+      "correct": {
+        "1": 1,
+        "2": 0,
+        "3": 0
+      },
+      "eliminated": false,
+      "round_queries": {
+        "1": 1,
+        "2": 0,
+        "3": 0
+      }
+    },
+    "team_gamma": {
+      "queries": 1,
+      "history": [
+        {
+          "input": "hello",
+          "output": "2",
+          "challenge": 1,
+          "round": 1
+        }
+      ],
+      "hypotheses": {
+        "1": {
+          "formula": "count the no of vowels",
+          "correct": true,
+          "score": 97
+        }
+      },
+      "scores": {
+        "1": 97,
+        "2": 0,
+        "3": 0
+      },
+      "correct": {
+        "1": 1,
+        "2": 0,
+        "3": 0
+      },
+      "eliminated": false,
+      "round_queries": {
+        "1": 1,
+        "2": 0,
+        "3": 0
+      }
+    }
+  },
+  "current_round": 2,
+  "round_ended": false,
+  "frozen": false,
+  "broadcast": "guys do fast, only 5mins remaining in this round, pls complete your submissions asap"
+}
