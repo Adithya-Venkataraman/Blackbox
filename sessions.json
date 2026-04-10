@@ -1,0 +1,206 @@
+{
+  "teams": {
+    "team_alpha": {
+      "queries": 20,
+      "history": [
+        {
+          "input": "hello",
+          "output": "1",
+          "challenge": 4,
+          "round": 1
+        },
+        {
+          "input": "Hello",
+          "output": "1",
+          "challenge": 4,
+          "round": 1
+        },
+        {
+          "input": "Hello",
+          "output": "1",
+          "challenge": 4,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "1",
+          "challenge": 4,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "1",
+          "challenge": 4,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "Hi",
+          "challenge": 5,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "0",
+          "challenge": 6,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "1",
+          "challenge": 7,
+          "round": 1
+        },
+        {
+          "input": "repeat string",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "heemlo",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "Hi my name is adithya",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "hello",
+          "output": "invalid",
+          "challenge": 8,
+          "round": 1
+        },
+        {
+          "input": "23",
+          "output": "odd",
+          "challenge": 9,
+          "round": 1
+        },
+        {
+          "input": "Hello",
+          "output": "HELLO",
+          "challenge": 10,
+          "round": 1
+        },
+        {
+          "input": "Hel lo",
+          "output": "Hello",
+          "challenge": 11,
+          "round": 1
+        },
+        {
+          "input": "first and last",
+          "output": "ft",
+          "challenge": 12,
+          "round": 1
+        },
+        {
+          "input": "hi",
+          "output": "hhii",
+          "challenge": 13,
+          "round": 1
+        },
+        {
+          "input": "jk",
+          "output": "jk",
+          "challenge": 14,
+          "round": 1
+        },
+        {
+          "input": "123",
+          "output": "3",
+          "challenge": 15,
+          "round": 1
+        }
+      ],
+      "hypotheses": {
+        "4": {
+          "formula": "count words",
+          "correct": true,
+          "score": 97
+        },
+        "5": {
+          "formula": "first letter is capital",
+          "correct": true,
+          "score": 82
+        },
+        "6": {
+          "formula": "sum of digits",
+          "correct": true,
+          "score": 82
+        },
+        "7": {
+          "formula": "count consonants",
+          "correct": true,
+          "score": 76
+        },
+        "9": {
+          "formula": "even or odd",
+          "correct": true,
+          "score": 58
+        },
+        "10": {
+          "formula": "uppercase",
+          "correct": true,
+          "score": 55
+        },
+        "11": {
+          "formula": "remove space",
+          "correct": true,
+          "score": 52
+        },
+        "12": {
+          "formula": "first and last",
+          "correct": true,
+          "score": 49
+        },
+        "13": {
+          "formula": "double character",
+          "correct": true,
+          "score": 46
+        },
+        "14": {
+          "formula": "lowercase",
+          "correct": true,
+          "score": 43
+        },
+        "15": {
+          "formula": "count digits",
+          "correct": true,
+          "score": 40
+        }
+      },
+      "scores": {
+        "1": 680,
+        "2": 0,
+        "3": 0
+      },
+      "correct": {
+        "1": 11,
+        "2": 0,
+        "3": 0
+      },
+      "eliminated": false,
+      "round_queries": {
+        "1": 20,
+        "2": 0,
+        "3": 0
+      }
+    }
+  },
+  "current_round": 2,
+  "round_ended": false,
+  "frozen": false,
+  "broadcast": ""
+}

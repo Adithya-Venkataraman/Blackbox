@@ -6,405 +6,90 @@
 <title>BLACKBOX</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --green: #00ff99;
-  --green-dim: #00cc77;
-  --green-dark: #003322;
-  --red: #ff3355;
-  --amber: #ffaa00;
-  --bg: #080b08;
-  --bg2: #0f130f;
-  --bg3: #161c16;
-  --border: #1a2a1a;
-  --text: #c8d8c8;
-  --muted: #4a5a4a;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Share Tech Mono', monospace;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,100,0.015) 2px, rgba(0,255,100,0.015) 4px);
-  pointer-events: none;
-  z-index: 999;
-}
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: linear-gradient(rgba(0,255,100,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,100,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
-}
-.wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
-.header { text-align: center; padding: 32px 0 28px; }
-.title-wrap { display: inline-block; position: relative; }
-.title {
-  font-family: 'Orbitron', monospace;
-  font-size: clamp(36px, 8vw, 72px);
-  font-weight: 900;
-  color: var(--green);
-  letter-spacing: 0.15em;
-  text-shadow: 0 0 20px rgba(0,255,100,0.4), 0 0 60px rgba(0,255,100,0.15);
-  animation: glitch 4s infinite;
-  position: relative;
-}
-.title::before, .title::after {
-  content: 'BLACKBOX';
-  position: absolute;
-  top: 0; left: 0; width: 100%;
-}
-.title::before {
-  color: var(--red);
-  animation: glitch-r 4s infinite;
-  clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
-  opacity: 0;
-}
-.title::after {
-  color: #00aaff;
-  animation: glitch-b 4s infinite;
-  clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
-  opacity: 0;
-}
-@keyframes glitch {
-  0%,89%,100% { transform: none; }
-  90% { transform: skewX(-2deg); }
-  92% { transform: skewX(2deg); }
-  94% { transform: none; }
-}
-@keyframes glitch-r {
-  0%,89% { opacity: 0; transform: none; }
-  90% { opacity: 0.7; transform: translate(-3px, 0); }
-  93% { opacity: 0; }
-}
-@keyframes glitch-b {
-  0%,91% { opacity: 0; transform: none; }
-  92% { opacity: 0.7; transform: translate(3px, 0); }
-  95% { opacity: 0; }
-}
-.subtitle { color: var(--muted); font-size: 13px; letter-spacing: 0.2em; margin-top: 8px; }
-.timer-bar {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 12px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.timer-label { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
-.timer-display {
-  font-family: 'Orbitron', monospace;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--green);
-  text-shadow: 0 0 10px rgba(0,255,100,0.3);
-  min-width: 80px;
-  text-align: center;
-}
-.timer-display.warn { color: var(--amber); text-shadow: 0 0 10px rgba(255,170,0,0.4); }
-.timer-display.danger { color: var(--red); text-shadow: 0 0 10px rgba(255,50,80,0.4); animation: blink 0.5s infinite; }
-@keyframes blink { 50% { opacity: 0.4; } }
-.timer-controls { display: flex; gap: 8px; }
-.timer-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  padding: 5px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.timer-btn:hover { border-color: var(--green); color: var(--green); }
-.timer-btn.active { border-color: var(--green); color: var(--green); background: var(--green-dark); }
-.round-badge {
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  background: var(--green-dark);
-  color: var(--green);
-  border: 1px solid rgba(0,255,100,0.2);
-  letter-spacing: 0.1em;
-}
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-@media(max-width:640px) { .grid { grid-template-columns: 1fr; } }
-.card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
-}
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--green), transparent);
-  opacity: 0.3;
-}
-.card-title {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.card-title::before { content: '//'; color: var(--green); opacity: 0.5; }
-label { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; display: block; margin-bottom: 5px; }
-input, select {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 14px;
-  padding: 9px 12px;
-  border-radius: 5px;
-  margin-bottom: 12px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-input:focus, select:focus { border-color: rgba(0,255,100,0.4); }
-select option { background: var(--bg2); }
-.challenge-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.c-pill {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 8px 4px;
-  text-align: center;
-  font-size: 11px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.c-pill.active { border-color: var(--green); color: var(--green); background: var(--green-dark); }
-.c-pill.locked { opacity: 0.3; cursor: not-allowed; }
-.c-pill .lock-icon { font-size: 10px; display: block; margin-top: 2px; }
-.probe-btn {
-  width: 100%;
-  background: var(--green);
-  color: #000;
-  border: none;
-  padding: 13px;
-  border-radius: 6px;
-  font-family: 'Orbitron', monospace;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  cursor: pointer;
-  transition: all 0.15s;
-  position: relative;
-  overflow: hidden;
-}
-.probe-btn:hover { background: var(--green-dim); transform: translateY(-1px); }
-.probe-btn:active { transform: translateY(0) scale(0.99); }
-.probe-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
-  transform: translateX(-100%);
-  transition: transform 0.4s;
-}
-.probe-btn:hover::after { transform: translateX(100%); }
-.output-terminal {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 14px;
-  min-height: 80px;
-  margin-top: 12px;
-}
-.terminal-header {
-  font-size: 10px;
-  color: var(--muted);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-.dot-r { background: #ff3355; }
-.dot-y { background: #ffaa00; }
-.dot-g { background: #00ff99; }
-.output-val {
-  font-family: 'Orbitron', monospace;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--green);
-  text-shadow: 0 0 15px rgba(0,255,100,0.4);
-  min-height: 36px;
-}
-.output-meta { font-size: 11px; color: var(--muted); margin-top: 6px; }
-.error-msg { color: var(--red); font-size: 12px; margin-top: 6px; }
-.cursor {
-  display: inline-block;
-  width: 2px; height: 1em;
-  background: var(--green);
-  margin-left: 2px;
-  animation: cur 0.8s infinite;
-  vertical-align: text-bottom;
-}
-@keyframes cur { 50% { opacity: 0; } }
-.query-progress { margin-top: 12px; }
-.progress-header { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-.progress-track {
-  width: 100%;
-  height: 4px;
-  background: var(--bg);
-  border-radius: 2px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-.progress-fill {
-  height: 100%;
-  background: var(--green);
-  border-radius: 2px;
-  transition: width 0.4s ease, background 0.3s;
-  box-shadow: 0 0 8px rgba(0,255,100,0.4);
-}
-.progress-fill.warn { background: var(--amber); box-shadow: 0 0 8px rgba(255,170,0,0.4); }
-.progress-fill.danger { background: var(--red); box-shadow: 0 0 8px rgba(255,50,80,0.4); }
-.history-card { margin-bottom: 14px; }
-.history-list { max-height: 200px; overflow-y: auto; }
-.history-list::-webkit-scrollbar { width: 3px; }
-.history-list::-webkit-scrollbar-track { background: transparent; }
-.history-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.h-row {
-  display: grid;
-  grid-template-columns: 70px 1fr 1fr 60px;
-  padding: 7px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-  align-items: center;
-  animation: fadeIn 0.3s ease;
-}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
-.h-row.header-row { color: var(--muted); font-size: 10px; letter-spacing: 0.1em; }
-.h-out { color: var(--green); font-weight: bold; }
-.h-time { color: var(--muted); font-size: 11px; }
-.h-badge {
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 3px;
-  background: var(--green-dark);
-  color: var(--green);
-  display: inline-block;
-}
-textarea {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
-  padding: 10px 12px;
-  border-radius: 5px;
-  resize: vertical;
-  min-height: 70px;
-  outline: none;
-  margin-bottom: 10px;
-  transition: border-color 0.2s;
-}
-textarea:focus { border-color: rgba(0,255,100,0.4); }
-.submit-btn {
-  width: 100%;
-  background: transparent;
-  border: 1px solid var(--green);
-  color: var(--green);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.15s;
-  letter-spacing: 0.1em;
-}
-.submit-btn:hover { background: var(--green-dark); }
-.hypo-sent {
-  background: var(--green-dark);
-  border: 1px solid rgba(0,255,100,0.3);
-  border-radius: 5px;
-  padding: 10px 14px;
-  font-size: 13px;
-  color: var(--green);
-  margin-top: 10px;
-  display: none;
-  animation: fadeIn 0.3s ease;
-}
-.status-bar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  padding: 6px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-  color: var(--muted);
-  z-index: 100;
-  letter-spacing: 0.05em;
-}
-.status-dot {
-  display: inline-block;
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  margin-right: 6px;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-.hint-box {
-  background: var(--bg);
-  border: 1px solid rgba(255,170,0,0.2);
-  border-radius: 5px;
-  padding: 8px 12px;
-  font-size: 12px;
-  color: var(--amber);
-  margin-bottom: 12px;
-  display: none;
-}
+:root{--green:#00ff99;--green-dim:#00cc77;--green-dark:#003322;--red:#ff3355;--amber:#ffaa00;--bg:#080b08;--bg2:#0f130f;--border:#1a2a1a;--text:#c8d8c8;--muted:#4a5a4a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Share Tech Mono',monospace;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,100,0.015) 2px,rgba(0,255,100,0.015) 4px);pointer-events:none;z-index:999;}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,100,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,100,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 16px 60px;}
+.header{text-align:center;padding:32px 0 28px;}
+.title{font-family:'Orbitron',monospace;font-size:clamp(36px,8vw,72px);font-weight:900;color:var(--green);letter-spacing:0.15em;text-shadow:0 0 20px rgba(0,255,100,0.4);animation:glitch 4s infinite;position:relative;}
+.title::before,.title::after{content:'BLACKBOX';position:absolute;top:0;left:0;width:100%;}
+.title::before{color:var(--red);animation:glitch-r 4s infinite;clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%);opacity:0;}
+.title::after{color:#00aaff;animation:glitch-b 4s infinite;clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%);opacity:0;}
+@keyframes glitch{0%,89%,100%{transform:none}90%{transform:skewX(-2deg)}92%{transform:skewX(2deg)}94%{transform:none}}
+@keyframes glitch-r{0%,89%{opacity:0;transform:none}90%{opacity:.7;transform:translate(-3px,0)}93%{opacity:0}}
+@keyframes glitch-b{0%,91%{opacity:0;transform:none}92%{opacity:.7;transform:translate(3px,0)}95%{opacity:0}}
+.subtitle{color:var(--muted);font-size:13px;letter-spacing:0.2em;margin-top:8px;}
+.timer-bar{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.timer-label{font-size:11px;color:var(--muted);letter-spacing:0.1em;}
+.timer-display{font-family:'Orbitron',monospace;font-size:22px;font-weight:700;color:var(--green);text-shadow:0 0 10px rgba(0,255,100,0.3);min-width:80px;text-align:center;}
+.timer-display.warn{color:var(--amber);}
+.timer-display.danger{color:var(--red);animation:blink .5s infinite;}
+@keyframes blink{50%{opacity:.4}}
+.timer-controls{display:flex;gap:8px;}
+.timer-btn{background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:12px;padding:5px 12px;border-radius:4px;cursor:pointer;transition:all .15s;}
+.timer-btn:hover{border-color:var(--green);color:var(--green);}
+.timer-btn.active{border-color:var(--green);color:var(--green);background:var(--green-dark);}
+.round-badge{font-size:11px;padding:4px 10px;border-radius:20px;background:var(--green-dark);color:var(--green);border:1px solid rgba(0,255,100,0.2);letter-spacing:0.1em;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:640px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.3;}
+.card-title{font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.card-title::before{content:'//';color:var(--green);opacity:.5;}
+label{font-size:11px;color:var(--muted);letter-spacing:.1em;display:block;margin-bottom:5px;}
+input,select{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:14px;padding:9px 12px;border-radius:5px;margin-bottom:12px;outline:none;transition:border-color .2s;}
+input:focus,select:focus{border-color:rgba(0,255,100,.4);}
+select option{background:var(--bg2);}
+.challenge-grid{display:grid;gap:6px;margin-bottom:12px;}
+.c-pill{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:8px 4px;text-align:center;font-size:11px;cursor:pointer;transition:all .15s;}
+.c-pill.active{border-color:var(--green);color:var(--green);background:var(--green-dark);}
+.c-pill.locked{opacity:.3;cursor:not-allowed;}
+.c-pill .lock-icon{font-size:10px;display:block;margin-top:2px;}
+.probe-btn{width:100%;background:var(--green);color:#000;border:none;padding:13px;border-radius:6px;font-family:'Orbitron',monospace;font-size:13px;font-weight:700;letter-spacing:.15em;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;}
+.probe-btn:hover{background:var(--green-dim);transform:translateY(-1px);}
+.probe-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transform:translateX(-100%);transition:transform .4s;}
+.probe-btn:hover::after{transform:translateX(100%);}
+.output-terminal{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:14px;min-height:80px;margin-top:12px;}
+.terminal-header{font-size:10px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block;}
+.dot-r{background:#ff3355}.dot-y{background:#ffaa00}.dot-g{background:#00ff99}
+.output-val{font-family:'Orbitron',monospace;font-size:28px;font-weight:700;color:var(--green);text-shadow:0 0 15px rgba(0,255,100,.4);min-height:36px;}
+.output-meta{font-size:11px;color:var(--muted);margin-top:6px;}
+.error-msg{color:var(--red);font-size:12px;margin-top:6px;}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--green);margin-left:2px;animation:cur .8s infinite;vertical-align:text-bottom;}
+@keyframes cur{50%{opacity:0}}
+.history-card{margin-bottom:14px;}
+.history-list{max-height:200px;overflow-y:auto;}
+.history-list::-webkit-scrollbar{width:3px;}
+.history-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.h-row{display:grid;grid-template-columns:70px 1fr 1fr 60px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;align-items:center;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.h-row.header-row{color:var(--muted);font-size:10px;letter-spacing:.1em;}
+.h-out{color:var(--green);font-weight:bold;}
+.h-time{color:var(--muted);font-size:11px;}
+.h-badge{font-size:10px;padding:2px 6px;border-radius:3px;background:var(--green-dark);color:var(--green);display:inline-block;}
+textarea{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:13px;padding:10px 12px;border-radius:5px;resize:vertical;min-height:70px;outline:none;margin-bottom:10px;transition:border-color .2s;}
+textarea:focus{border-color:rgba(0,255,100,.4);}
+.submit-btn{width:100%;background:transparent;border:1px solid var(--green);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:13px;padding:10px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.1em;}
+.submit-btn:hover{background:var(--green-dark);}
+.hypo-sent{background:var(--green-dark);border:1px solid rgba(0,255,100,.3);border-radius:5px;padding:10px 14px;font-size:13px;color:var(--green);margin-top:10px;display:none;animation:fadeIn .3s ease;}
+.hint-box{background:var(--bg);border:1px solid rgba(255,170,0,.2);border-radius:5px;padding:8px 12px;font-size:12px;color:var(--amber);margin-bottom:12px;display:none;}
+.status-bar{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);padding:6px 20px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);z-index:100;}
+.status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div id="broadcast-banner" style="display:none;background:#1a1000;border:1px solid var(--amber);border-radius:6px;padding:10px 16px;margin-bottom:14px;color:var(--amber);font-size:13px;letter-spacing:0.05em;">
-  <span style="color:var(--amber);margin-right:8px;">📢</span><span id="broadcast-text"></span>
-</div>
-
-  <!-- HEADER -->
+  <div id="broadcast-banner" style="display:none;background:#1a1000;border:1px solid var(--amber);border-radius:6px;padding:10px 16px;margin-bottom:14px;color:var(--amber);font-size:13px;">
+    <span style="margin-right:8px;">📢</span><span id="broadcast-text"></span>
+  </div>
   <div class="header">
-    <div class="title-wrap">
-      <div class="title">BLACKBOX</div>
-    </div>
+    <div class="title-wrap"><div class="title">BLACKBOX</div></div>
     <div class="subtitle">// DEDUCE THE HIDDEN LOGIC. PROBE WISELY. //</div>
   </div>
-
-  <!-- TIMER BAR -->
   <div class="timer-bar">
     <div>
       <div class="timer-label">ROUND TIMER</div>
@@ -415,418 +100,329 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
       <button class="timer-btn active" id="btn-start" onclick="toggleTimer()">START</button>
     </div>
   </div>
-
-  <!-- TEAM NAME (always visible) -->
   <div class="card" style="margin-bottom:14px;">
     <div class="card-title">IDENTITY</div>
     <label>TEAM NAME</label>
-    <input id="team" autocomplete="off" placeholder="e.g. team_alpha" style="margin-bottom:0;" />
+    <input id="team" autocomplete="off" placeholder="e.g. team_alpha" style="margin-bottom:0;" oninput="saveState()"/>
   </div>
-
-  <!-- ROUND STATUS BANNER (shown after START) -->
-  <div id="round-status-banner" style="display:none;background:var(--green-dark);border:1px solid rgba(0,255,100,0.3);border-radius:6px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:var(--green);letter-spacing:0.12em;text-align:center;">
+  <div id="round-status-banner" style="display:none;background:var(--green-dark);border:1px solid rgba(0,255,100,.3);border-radius:6px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:var(--green);letter-spacing:.12em;text-align:center;">
     🟢 ROUND STARTED — PROBE WISELY
   </div>
-
-  <!-- MAIN CONTENT (hidden until START) -->
   <div id="main-content" style="display:none;">
-
     <div class="grid">
-
-      <!-- PROBE CARD -->
       <div class="card">
         <div class="card-title">PROBE INTERFACE</div>
         <label>SELECT CHALLENGE</label>
-        <div class="challenge-grid" id="challenge-grid" style="grid-template-columns:repeat(5,1fr);">
-          <!-- Pills are rendered dynamically by buildChallengePills() -->
-        </div>
+        <div class="challenge-grid" id="challenge-grid"></div>
         <div class="hint-box" id="hint-box"></div>
         <label>INPUT VALUE</label>
-        <input id="inputval" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-        <div id="freeze-banner" style="display:none;background:#1a0008;border:1px solid var(--red);border-radius:6px;padding:8px 14px;margin-bottom:10px;color:var(--red);font-size:12px;text-align:center;letter-spacing:0.1em;">
-  ⛔ SUBMISSIONS FROZEN BY COORDINATOR
-</div>
+        <input id="inputval" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+        <div id="freeze-banner" style="display:none;background:#1a0008;border:1px solid var(--red);border-radius:6px;padding:8px 14px;margin-bottom:10px;color:var(--red);font-size:12px;text-align:center;">
+          ⛔ SUBMISSIONS FROZEN BY COORDINATOR
+        </div>
         <button class="probe-btn" onclick="probe()">[ PROBE → ]</button>
         <div class="output-terminal">
           <div class="terminal-header">
-            <span class="dot dot-r"></span>
-            <span class="dot dot-y"></span>
-            <span class="dot dot-g"></span>
-            OUTPUT
+            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>OUTPUT
           </div>
           <div class="output-val" id="output-val">—</div>
           <div class="output-meta" id="output-meta"></div>
           <div class="error-msg" id="error-msg"></div>
         </div>
-        <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.05em;">
-          ⚠ Each query deducts points — probe wisely. Fewer queries = higher score.
-        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);">⚠ Each query deducts points — probe wisely.</div>
       </div>
-
-      <!-- RIGHT COLUMN -->
       <div style="display:flex;flex-direction:column;gap:14px;">
-
-        <!-- HYPOTHESIS -->
         <div class="card">
           <div class="card-title">SUBMIT HYPOTHESIS</div>
           <label>CHALLENGE</label>
-<select id="hypo-challenge">
-  <!-- Populated dynamically by buildChallengePills() -->
-</select>
+          <select id="hypo-challenge"></select>
           <label>YOUR DEDUCED ANSWER</label>
           <textarea id="hypo-input" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
           <button class="submit-btn" onclick="submitHypo()">⟶ SUBMIT HYPOTHESIS</button>
           <div class="hypo-sent" id="hypo-sent"></div>
         </div>
-
       </div>
     </div>
-
-    <!-- QUERY HISTORY -->
     <div class="card history-card">
       <div class="card-title">QUERY HISTORY</div>
       <div class="history-list">
-        <div class="h-row header-row">
-          <div>CHALLENGE</div><div>INPUT</div><div>OUTPUT</div><div>TIME</div>
-        </div>
+        <div class="h-row header-row"><div>CHALLENGE</div><div>INPUT</div><div>OUTPUT</div><div>TIME</div></div>
         <div id="history-body"></div>
       </div>
     </div>
-
-  </div><!-- end main-content -->
-
+  </div>
 </div>
-
-<!-- STATUS BAR -->
 <div class="status-bar">
-  <div style="position:absolute;left:50%;transform:translateX(-50%);">Built by Adithya Venkataraman</div>
+  <div><span class="status-dot"></span>BLACKBOX v1.0</div>
+  <div id="status-right">ENTER TEAM NAME AND HIT START</div>
 </div>
-
 <script>
-const ROUND_TIMES = { 1: 20, 2: 25, 3: 15 };
-const ROUND_NAMES = {
-  1: 'ROUND 1 — QUALIFIER',
-  2: 'ROUND 2 — SEMI FINAL',
-  3: 'ROUND 3 — GRAND FINAL'
-};
+const ROUND_TIMES={1:20,2:25,3:15};
+const ROUND_NAMES={1:'ROUND 1 — QUALIFIER',2:'ROUND 2 — SEMI FINAL',3:'ROUND 3 — GRAND FINAL'};
+const ROUND_CHALLENGE_IDS={1:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],2:[16,17,18,19,20,21,22,23],3:[24,25,26,27]};
+const STORAGE_KEY='blackbox_state';
+let selectedChallenge=1,history=[],timerInterval=null,timerSeconds=20*60,timerRunning=false,timerStarted=false,typingTimeout=null,currentRound=1,lastRound=1,unlockedIds=new Set();
 
-// Maps round → actual challenge IDs in challenges.py
-const ROUND_CHALLENGE_IDS = {
-  1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-  2: [16, 17, 18, 19, 20, 21, 22, 23],
-  3: [24, 25, 26, 27]
-};
-
-let selectedChallenge = 1;   // actual backend challenge ID
-let history          = [];
-let timerInterval    = null;
-let timerSeconds     = 20 * 60;
-let timerRunning     = false;
-let timerStarted     = false;
-let typingTimeout    = null;
-let currentRound     = 1;
-
-// ── BUILD PILLS for current round ──
-// Pills always show C1, C2, C3 … (local labels) regardless of round.
-// Internally they map to the actual backend challenge IDs for that round.
-function buildChallengePills(round) {
-  const ids   = ROUND_CHALLENGE_IDS[round] || [];
-  const count = ids.length;
-  const grid  = document.getElementById('challenge-grid');
-  const sel   = document.getElementById('hypo-challenge');
-
-  // Set grid columns: max 5 per row
-  const cols = Math.min(count, 5);
-  grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-
-  // Build pills
-  grid.innerHTML = ids.map((realId, idx) => {
-    const localLabel = `C${idx + 1}`;
-    const isFirst    = idx === 0;
-    return `<div class="c-pill ${isFirst ? 'active' : 'locked'}"
-                 data-id="${realId}"
-                 onclick="selectChallenge(${realId})">
-              ${localLabel}<span class="lock-icon">${isFirst ? '●' : '🔒'}</span>
-            </div>`;
-  }).join('');
-
-  // Build hypothesis dropdown with local labels
-  sel.innerHTML = ids.map((realId, idx) =>
-    `<option value="${realId}">C${idx + 1}</option>`
-  ).join('');
-
-  // Set first challenge as selected
-  selectedChallenge = ids[0];
-  sel.value = ids[0];
+function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({
+      team:document.getElementById('team').value.trim(),
+      currentRound,timerStarted,
+      timerSeconds:timerStarted?timerSeconds:ROUND_TIMES[currentRound]*60,
+      timerEnded:timerSeconds<=0,
+      selectedChallenge,unlockedIds:[...unlockedIds],
+      history:history.slice(0,50),
+      mainVisible:document.getElementById('main-content').style.display!=='none'
+    }));
+  }catch(e){}
 }
+function loadState(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY));}catch(e){return null;}}
+function clearState(){try{localStorage.removeItem(STORAGE_KEY);}catch(e){}}
 
-// ── ROUND SYNC ──
-async function syncRound() {
-  try {
-    const res  = await fetch('/api/round');
-    const data = await res.json();
-    currentRound = data.round;
-    lastRound    = data.round;   // keep lastRound in sync so pollRound doesn't misfire
-    timerSeconds = ROUND_TIMES[currentRound] * 60;
-    updateTimerDisplay();
-    document.getElementById('round-badge').textContent = ROUND_NAMES[currentRound];
-    buildChallengePills(currentRound);
-    loadHint(selectedChallenge);
-  } catch(e) {}
-}
-
-// ── CHALLENGE SELECTION ──
-function selectChallenge(realId) {
-  const pill = document.querySelector(`.c-pill[data-id="${realId}"]`);
-  if (!pill || pill.classList.contains('locked')) return;
-  selectedChallenge = realId;
-  document.querySelectorAll('.c-pill').forEach(p => p.classList.remove('active'));
-  pill.classList.add('active');
-  document.getElementById('hypo-challenge').value = realId;
-  loadHint(realId);
-}
-
-async function loadHint(realId) {
-  try {
-    const res  = await fetch(`/hint/${realId}`);
-    const data = await res.json();
-    const box  = document.getElementById('hint-box');
-    box.textContent = '💡 ' + data.hint;
-    box.style.display = 'block';
-  } catch(e) {}
-}
-
-// Unlock the next pill in this round after a probe
-function unlockNextChallenge(realId) {
-  const ids  = ROUND_CHALLENGE_IDS[currentRound] || [];
-  const idx  = ids.indexOf(realId);
-  if (idx === -1 || idx + 1 >= ids.length) return;
-  const nextId = ids[idx + 1];
-  const pill   = document.querySelector(`.c-pill[data-id="${nextId}"]`);
-  if (pill && pill.classList.contains('locked')) {
-    pill.classList.remove('locked');
-    pill.querySelector('.lock-icon').textContent = '●';
-  }
-}
-
-// ── PROBE ──
-async function probe() {
-  const team   = document.getElementById('team').value.trim();
-  const input  = document.getElementById('inputval').value.trim();
-  const errEl  = document.getElementById('error-msg');
-  const outEl  = document.getElementById('output-val');
-  const metaEl = document.getElementById('output-meta');
-
-  errEl.textContent = '';
-  if (!team)  { errEl.textContent = 'ERROR: enter team name'; return; }
-  if (!input) { errEl.textContent = 'ERROR: enter input value'; return; }
-
-  outEl.innerHTML = '<span class="cursor"></span>';
-
-  try {
-    const res  = await fetch('/query', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ team, challenge_id: selectedChallenge, input })
-    });
-    const data = await res.json();
-
-    if (data.error === 'Team eliminated') {
-      errEl.textContent = 'YOUR TEAM HAS BEEN ELIMINATED';
-      errEl.style.fontSize = '15px';
-      document.querySelector('.probe-btn').disabled = true;
-      document.querySelector('.probe-btn').style.opacity = '0.3';
-      return;
+function restoreState(state){
+  if(!state)return;
+  if(state.team)document.getElementById('team').value=state.team;
+  currentRound=state.currentRound||1;
+  lastRound=currentRound;
+  timerSeconds=state.timerSeconds!==undefined?state.timerSeconds:ROUND_TIMES[currentRound]*60;
+  document.getElementById('round-badge').textContent=ROUND_NAMES[currentRound];
+  buildChallengePills(currentRound);
+  unlockedIds=new Set(state.unlockedIds||[ROUND_CHALLENGE_IDS[currentRound][0]]);
+  applyUnlockedState();
+  selectedChallenge=state.selectedChallenge||ROUND_CHALLENGE_IDS[currentRound][0];
+  document.querySelectorAll('.c-pill').forEach(p=>p.classList.remove('active'));
+  const ap=document.querySelector(`.c-pill[data-id="${selectedChallenge}"]`);
+  if(ap)ap.classList.add('active');
+  document.getElementById('hypo-challenge').value=selectedChallenge;
+  loadHint(selectedChallenge);
+  history=state.history||[];
+  renderHistory();
+  if(state.timerStarted){
+    timerStarted=true;
+    const btn=document.getElementById('btn-start');
+    if(state.timerEnded||timerSeconds<=0){
+      timerSeconds=0;btn.textContent='ENDED';btn.disabled=true;btn.style.opacity='0.4';btn.style.cursor='not-allowed';
+      document.getElementById('timer-display').textContent='TIME UP';
+    } else {
+      btn.textContent='RUNNING';btn.disabled=true;btn.style.opacity='0.4';btn.style.cursor='not-allowed';
+      updateTimerDisplay();timerRunning=true;
+      timerInterval=setInterval(()=>{
+        timerSeconds--;updateTimerDisplay();
+        if(timerSeconds%5===0)saveState();
+        if(timerSeconds<=0){
+          clearInterval(timerInterval);timerRunning=false;
+          btn.textContent='ENDED';
+          document.getElementById('timer-display').textContent='TIME UP';
+          setStatus('ROUND OVER — WAIT FOR COORDINATOR');saveState();
+        }
+      },1000);
     }
-    if (data.error) { errEl.textContent = 'ERROR: ' + data.error; outEl.textContent = '—'; return; }
+    if(state.mainVisible){
+      document.getElementById('main-content').style.display='block';
+      document.getElementById('round-status-banner').style.display='block';
+    }
+  } else {updateTimerDisplay();}
+}
 
-    typewriterOutput(String(data.output), outEl);
-    metaEl.textContent = `challenge ${selectedChallenge}  ·  input: ${input}  ·  queries this round: ${data.round_queries}`;
-    addHistoryRow(selectedChallenge, input, data.output);
+function buildChallengePills(round){
+  const ids=ROUND_CHALLENGE_IDS[round]||[];
+  const grid=document.getElementById('challenge-grid');
+  const sel=document.getElementById('hypo-challenge');
+  grid.style.gridTemplateColumns=`repeat(${Math.min(ids.length,5)},1fr)`;
+  grid.innerHTML=ids.map((rid,i)=>`<div class="c-pill locked" data-id="${rid}" onclick="selectChallenge(${rid})">C${i+1}<span class="lock-icon">🔒</span></div>`).join('');
+  sel.innerHTML=ids.map((rid,i)=>`<option value="${rid}">C${i+1}</option>`).join('');
+  if(!unlockedIds.size)unlockedIds.add(ids[0]);
+}
+
+function applyUnlockedState(){
+  document.querySelectorAll('.c-pill').forEach(pill=>{
+    const id=parseInt(pill.getAttribute('data-id'));
+    if(unlockedIds.has(id)){pill.classList.remove('locked');pill.querySelector('.lock-icon').textContent='●';}
+    else{pill.classList.add('locked');pill.querySelector('.lock-icon').textContent='🔒';}
+  });
+}
+
+async function syncRound(){
+  try{
+    const res=await fetch('/api/round');const data=await res.json();
+    currentRound=data.round;lastRound=data.round;
+    document.getElementById('round-badge').textContent=ROUND_NAMES[currentRound];
+    const saved=loadState();
+    if(!saved||saved.currentRound!==currentRound){
+      timerSeconds=ROUND_TIMES[currentRound]*60;updateTimerDisplay();
+      unlockedIds=new Set([ROUND_CHALLENGE_IDS[currentRound][0]]);
+      buildChallengePills(currentRound);applyUnlockedState();
+      selectedChallenge=ROUND_CHALLENGE_IDS[currentRound][0];loadHint(selectedChallenge);
+    }
+  }catch(e){}
+}
+
+function selectChallenge(realId){
+  const pill=document.querySelector(`.c-pill[data-id="${realId}"]`);
+  if(!pill||pill.classList.contains('locked'))return;
+  selectedChallenge=realId;
+  document.querySelectorAll('.c-pill').forEach(p=>p.classList.remove('active'));
+  pill.classList.add('active');
+  document.getElementById('hypo-challenge').value=realId;
+  loadHint(realId);saveState();
+}
+
+async function loadHint(realId){
+  try{
+    const res=await fetch(`/hint/${realId}`);const data=await res.json();
+    const box=document.getElementById('hint-box');
+    if(data.hint&&data.hint!=='no hint available'){box.textContent='💡 '+data.hint;box.style.display='block';}
+    else{box.style.display='none';}
+  }catch(e){}
+}
+
+function unlockNextChallenge(realId){
+  const ids=ROUND_CHALLENGE_IDS[currentRound]||[];
+  const idx=ids.indexOf(realId);
+  if(idx===-1||idx+1>=ids.length)return;
+  const nextId=ids[idx+1];
+  unlockedIds.add(nextId);
+  const pill=document.querySelector(`.c-pill[data-id="${nextId}"]`);
+  if(pill&&pill.classList.contains('locked')){pill.classList.remove('locked');pill.querySelector('.lock-icon').textContent='●';}
+  saveState();
+}
+
+async function probe(){
+  const team=document.getElementById('team').value.trim();
+  const input=document.getElementById('inputval').value.trim();
+  const errEl=document.getElementById('error-msg');
+  const outEl=document.getElementById('output-val');
+  const metaEl=document.getElementById('output-meta');
+  errEl.textContent='';
+  if(!team){errEl.textContent='ERROR: enter team name';return;}
+  if(!input){errEl.textContent='ERROR: enter input value';return;}
+  outEl.innerHTML='<span class="cursor"></span>';
+  try{
+    const res=await fetch('/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({team,challenge_id:selectedChallenge,input})});
+    const data=await res.json();
+    if(data.error==='Team eliminated'){errEl.textContent='YOUR TEAM HAS BEEN ELIMINATED';errEl.style.fontSize='15px';document.querySelector('.probe-btn').disabled=true;document.querySelector('.probe-btn').style.opacity='0.3';return;}
+    if(data.error){errEl.textContent='ERROR: '+data.error;outEl.textContent='—';return;}
+    typewriterOutput(String(data.output),outEl);
+    metaEl.textContent=`C${selectedChallenge}  ·  input: ${input}  ·  queries this round: ${data.round_queries}`;
+    addHistoryRow(selectedChallenge,input,data.output);
     unlockNextChallenge(selectedChallenge);
     setStatus(`LAST PROBE: C${selectedChallenge} [${input}] → ${data.output}`);
-
-  } catch(e) {
-    errEl.textContent = 'CONNECTION ERROR — is server running?';
-    outEl.textContent = '—';
-  }
+    saveState();
+  }catch(e){errEl.textContent='CONNECTION ERROR — is server running?';outEl.textContent='—';}
 }
 
-function typewriterOutput(text, el) {
-  el.textContent = '';
-  let i = 0;
-  clearTimeout(typingTimeout);
-  function type() {
-    if (i < text.length) {
-      el.textContent += text[i++];
-      typingTimeout = setTimeout(type, 40);
-    }
-  }
+function typewriterOutput(text,el){
+  el.textContent='';let i=0;clearTimeout(typingTimeout);
+  function type(){if(i<text.length){el.textContent+=text[i++];typingTimeout=setTimeout(type,40);}}
   type();
 }
 
-
-function addHistoryRow(cid, input, output) {
-  const now  = new Date();
-  const time = now.getHours().toString().padStart(2,'0') + ':' +
-               now.getMinutes().toString().padStart(2,'0') + ':' +
-               now.getSeconds().toString().padStart(2,'0');
-  history.unshift({ cid, input, output, time });
-  renderHistory();
+function addHistoryRow(cid,input,output){
+  const now=new Date();
+  const time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')+':'+now.getSeconds().toString().padStart(2,'0');
+  history.unshift({cid,input,output,time});renderHistory();
 }
 
-function renderHistory() {
-  const body = document.getElementById('history-body');
-  if (history.length === 0) { body.innerHTML = ''; return; }
-  body.innerHTML = history.slice(0, 30).map(h => `
-    <div class="h-row">
-      <div><span class="h-badge">C${h.cid}</span></div>
-      <div>${h.input}</div>
-      <div class="h-out">${h.output}</div>
-      <div class="h-time">${h.time}</div>
-    </div>
-  `).join('');
+function renderHistory(){
+  const body=document.getElementById('history-body');
+  if(!history.length){body.innerHTML='';return;}
+  body.innerHTML=history.slice(0,30).map(h=>`<div class="h-row"><div><span class="h-badge">C${h.cid}</span></div><div>${h.input}</div><div class="h-out">${h.output}</div><div class="h-time">${h.time}</div></div>`).join('');
 }
 
-// ── HYPOTHESIS ──
-async function submitHypo() {
-  const formula = document.getElementById('hypo-input').value.trim().toLowerCase();
-  const cid     = document.getElementById('hypo-challenge').value;
-  const team    = document.getElementById('team').value.trim();
-  const sent    = document.getElementById('hypo-sent');
-
-  if (!formula || !team) return;
-
-  const res  = await fetch('/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ team, challenge_id: cid, formula })
-  });
-  const data = await res.json();
-
-  if (data.error === 'Team eliminated') {
-    sent.style.background   = '#1a0008';
-    sent.style.borderColor  = 'rgba(255,50,80,0.3)';
-    sent.style.color        = 'var(--red)';
-    sent.textContent        = '✕ YOUR TEAM HAS BEEN ELIMINATED';
-    sent.style.display      = 'block';
-    return;
-  }
-
-  if (data.correct) {
-    sent.style.background  = '#003322';
-    sent.style.borderColor = 'rgba(0,255,100,0.4)';
-    sent.style.color       = 'var(--green)';
-    sent.textContent       = `✓ C${cid} CORRECT — +100 pts  |  Round score: ${data.round_score}`;
-  } else {
-    sent.style.background  = '#1a0008';
-    sent.style.borderColor = 'rgba(255,50,80,0.3)';
-    sent.style.color       = 'var(--red)';
-    sent.textContent       = `✕ C${cid} INCORRECT — 0 pts  |  Round score: ${data.round_score}`;
-  }
-
-  sent.style.display = 'block';
-  document.getElementById('hypo-input').value = '';
-  setTimeout(() => { sent.style.display = 'none'; }, 5000);
-  setStatus(`C${cid} submitted — ${data.correct ? 'CORRECT' : 'WRONG'} — Round score: ${data.round_score}`);
+async function submitHypo(){
+  const formula=document.getElementById('hypo-input').value.trim().toLowerCase();
+  const cid=document.getElementById('hypo-challenge').value;
+  const team=document.getElementById('team').value.trim();
+  const sent=document.getElementById('hypo-sent');
+  if(!formula||!team)return;
+  const res=await fetch('/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({team,challenge_id:cid,formula})});
+  const data=await res.json();
+  if(data.error==='Team eliminated'){sent.style.cssText='display:block;padding:10px 14px;border-radius:5px;margin-top:10px;background:#1a0008;border:1px solid rgba(255,50,80,.3);color:var(--red);font-size:13px;';sent.textContent='✕ YOUR TEAM HAS BEEN ELIMINATED';return;}
+  if(data.correct){sent.style.cssText='display:block;padding:10px 14px;border-radius:5px;margin-top:10px;background:#003322;border:1px solid rgba(0,255,100,.4);color:var(--green);font-size:13px;';sent.textContent=`✓ C${cid} CORRECT — +100 pts  |  Round score: ${data.round_score}`;}
+  else{sent.style.cssText='display:block;padding:10px 14px;border-radius:5px;margin-top:10px;background:#1a0008;border:1px solid rgba(255,50,80,.3);color:var(--red);font-size:13px;';sent.textContent=`✕ C${cid} INCORRECT — 0 pts  |  Round score: ${data.round_score}`;}
+  document.getElementById('hypo-input').value='';
+  setTimeout(()=>{sent.style.display='none';},5000);
+  setStatus(`C${cid} — ${data.correct?'CORRECT':'WRONG'} — Round score: ${data.round_score}`);
 }
 
-// ── TIMER ──
-function toggleTimer() {
-  const btn = document.getElementById('btn-start');
-  if (!timerStarted) {
-    const team = document.getElementById('team').value.trim();
-    if (!team) {
-      setStatus('ENTER YOUR TEAM NAME FIRST');
-      document.getElementById('team').focus();
-      return;
-    }
-    timerStarted = true;
-    timerRunning = true;
-    btn.textContent      = 'RUNNING';
-    btn.disabled         = true;
-    btn.style.opacity    = '0.4';
-    btn.style.cursor     = 'not-allowed';
-    document.getElementById('main-content').style.display = 'block';
-    document.getElementById('round-status-banner').style.display = 'block';
-    setStatus('TIMER RUNNING');
-    timerInterval = setInterval(() => {
-      timerSeconds--;
-      updateTimerDisplay();
-      if (timerSeconds <= 0) {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        btn.textContent = 'ENDED';
-        document.getElementById('timer-display').textContent = 'TIME UP';
-        setStatus('ROUND OVER — WAIT FOR COORDINATOR');
+function toggleTimer(){
+  const btn=document.getElementById('btn-start');
+  const team=document.getElementById('team').value.trim();
+  if(!timerStarted){
+    if(!team){setStatus('ENTER YOUR TEAM NAME FIRST');document.getElementById('team').focus();return;}
+    timerStarted=true;timerRunning=true;
+    btn.textContent='RUNNING';btn.disabled=true;btn.style.opacity='0.4';btn.style.cursor='not-allowed';
+    document.getElementById('main-content').style.display='block';
+    document.getElementById('round-status-banner').style.display='block';
+    setStatus('TIMER RUNNING — PROBE WISELY');saveState();
+    timerInterval=setInterval(()=>{
+      timerSeconds--;updateTimerDisplay();
+      if(timerSeconds%5===0)saveState();
+      if(timerSeconds<=0){
+        clearInterval(timerInterval);timerRunning=false;
+        btn.textContent='ENDED';
+        document.getElementById('timer-display').textContent='TIME UP';
+        setStatus('ROUND OVER — WAIT FOR COORDINATOR');saveState();
       }
-    }, 1000);
+    },1000);
   }
 }
-let lastRound = 1;
 
-async function pollRound() {
-  try {
-    const res  = await fetch('/api/round');
-    const data = await res.json();
-    // Handle broadcast
-    const banner = document.getElementById('broadcast-banner');
-    if (data.broadcast) {
-      document.getElementById('broadcast-text').textContent = data.broadcast;
-      banner.style.display = 'block';
-    } else { banner.style.display = 'none'; }
-    // Handle freeze
-    const fb = document.getElementById('freeze-banner');
-    if (fb) fb.style.display = data.frozen ? 'block' : 'none';
+function updateTimerDisplay(){
+  const el=document.getElementById('timer-display');
+  const m=Math.floor(timerSeconds/60).toString().padStart(2,'0');
+  const s=(timerSeconds%60).toString().padStart(2,'0');
+  el.textContent=`${m}:${s}`;el.className='timer-display';
+  if(timerSeconds<=60)el.classList.add('danger');
+  else if(timerSeconds<=180)el.classList.add('warn');
+}
 
-    if (data.round !== lastRound) {
-      lastRound    = data.round;
-      currentRound = data.round;
-      timerSeconds = ROUND_TIMES[currentRound] * 60;
-      timerStarted = false;
-      timerRunning = false;
-      clearInterval(timerInterval);
+function setStatus(msg){const el=document.getElementById('status-right');if(el)el.textContent=msg;}
 
-      // reset UI
-      document.getElementById('timer-display').textContent =
-        `${ROUND_TIMES[currentRound].toString().padStart(2,'0')}:00`;
-      document.getElementById('timer-display').className = 'timer-display';
-      document.getElementById('round-badge').textContent = ROUND_NAMES[currentRound];
-      document.getElementById('btn-start').textContent   = 'START';
-      document.getElementById('btn-start').disabled      = false;
-      document.getElementById('btn-start').style.opacity = '1';
-      document.getElementById('btn-start').style.cursor  = 'pointer';
-      document.getElementById('main-content').style.display = 'none';
-      document.getElementById('round-status-banner').style.display = 'none';
-      buildChallengePills(currentRound);
-
-      // big alert to participant
-      setStatus(`ROUND ${currentRound} STARTED — ENTER YOUR NAME AND HIT START`);
+async function pollRound(){
+  try{
+    const res=await fetch('/api/round');const data=await res.json();
+    const banner=document.getElementById('broadcast-banner');
+    if(data.broadcast){document.getElementById('broadcast-text').textContent=data.broadcast;banner.style.display='block';}
+    else{banner.style.display='none';}
+    const fb=document.getElementById('freeze-banner');
+    if(fb)fb.style.display=data.frozen?'block':'none';
+    if(data.round!==lastRound){
+      lastRound=data.round;currentRound=data.round;
+      timerSeconds=ROUND_TIMES[currentRound]*60;timerStarted=false;timerRunning=false;
+      clearInterval(timerInterval);unlockedIds=new Set([ROUND_CHALLENGE_IDS[currentRound][0]]);
+      clearState();updateTimerDisplay();
+      document.getElementById('timer-display').className='timer-display';
+      document.getElementById('round-badge').textContent=ROUND_NAMES[currentRound];
+      const btn=document.getElementById('btn-start');
+      btn.textContent='START';btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
+      document.getElementById('main-content').style.display='none';
+      document.getElementById('round-status-banner').style.display='none';
+      buildChallengePills(currentRound);applyUnlockedState();
+      selectedChallenge=ROUND_CHALLENGE_IDS[currentRound][0];
+      history=[];renderHistory();
+      setStatus(`ROUND ${currentRound} — ENTER NAME AND HIT START`);
       alert(`ROUND ${currentRound} HAS BEGUN — Click OK then hit START when ready`);
     }
-  } catch(e) {}
-}
-function updateTimerDisplay() {
-  const el = document.getElementById('timer-display');
-  const m  = Math.floor(timerSeconds / 60).toString().padStart(2,'0');
-  const s  = (timerSeconds % 60).toString().padStart(2,'0');
-  el.textContent = `${m}:${s}`;
-  el.className   = 'timer-display';
-  if (timerSeconds <= 60)  el.classList.add('danger');
-  else if (timerSeconds <= 180) el.classList.add('warn');
+  }catch(e){}
 }
 
-function setStatus(msg) {
-  // status bar removed
-}
-
-// ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('inputval').addEventListener('keydown', e => {
-    if (e.key === 'Enter') probe();
-  });
-  syncRound();
-  setInterval(pollRound, 5000);  // ← add this line
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('inputval').addEventListener('keydown',e=>{if(e.key==='Enter')probe();});
+  const saved=loadState();
+  if(saved){
+    fetch('/api/round').then(r=>r.json()).then(serverData=>{
+      if(saved.currentRound===serverData.round){restoreState(saved);lastRound=serverData.round;}
+      else{
+        clearState();currentRound=serverData.round;lastRound=serverData.round;
+        unlockedIds=new Set([ROUND_CHALLENGE_IDS[currentRound][0]]);
+        timerSeconds=ROUND_TIMES[currentRound]*60;updateTimerDisplay();
+        document.getElementById('round-badge').textContent=ROUND_NAMES[currentRound];
+        buildChallengePills(currentRound);applyUnlockedState();
+      }
+    }).catch(()=>restoreState(saved));
+  } else {syncRound();}
+  setInterval(pollRound,5000);
 });
 </script>
 </body>
