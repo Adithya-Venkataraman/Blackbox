@@ -1,10 +1,10 @@
 ROUNDS = {
-    1: [1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12],  # 12 easy  — 20 min
-    2: [13, 14, 15, 16, 17, 18, 19],                        # 7 medium — 20 min
-    3: [20, 21, 22],                                         # 3 hard   — 20 min
+    1: [1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15],  # 15 easy  — 20 min
+    2: [16, 17, 18, 19, 20, 21, 22, 23],                                 # 8 medium — 25 min
+    3: [24, 25, 26, 27],                                                  # 4 hard   — 15 min
 }
 
-# ══ ROUND 1 — EASY (12 questions, ~1 min each) ════════════════════════════════
+# ══ ROUND 1 — EASY ════════════════════════════════════════════════════════════
 
 def vowel_count(x):
     return sum(1 for c in str(x).lower() if c in 'aeiou')
@@ -36,7 +36,6 @@ def repeat_string(x):
         return "invalid"
 
 def is_even_odd(x):
-    # input: any integer → "even" or "odd"
     try:
         return "even" if int(str(x).strip()) % 2 == 0 else "odd"
     except:
@@ -49,11 +48,19 @@ def remove_spaces(x):
     return str(x).replace(" ", "")
 
 def first_last_char(x):
-    # input: any word → first and last character concatenated
     s = str(x).replace(" ", "")
     return s[0] + s[-1] if len(s) >= 2 else s
 
-# ══ ROUND 2 — MEDIUM (7 questions, ~2-3 min each) ════════════════════════════
+def double_chars(x):
+    return ''.join(c * 2 for c in str(x))
+
+def lowercase(x):
+    return str(x).lower()
+
+def count_digits(x):
+    return sum(1 for c in str(x) if c.isdigit())
+
+# ══ ROUND 2 — MEDIUM ══════════════════════════════════════════════════════════
 
 def binary_to_decimal(x):
     try:
@@ -95,7 +102,6 @@ def is_palindrome(x):
     return "yes" if s == s[::-1] else "no"
 
 def vowel_consonant_swap(x):
-    # vowels → *, consonants → #
     result = ''
     for c in str(x).lower():
         if c.isalpha():
@@ -107,7 +113,11 @@ def vowel_consonant_swap(x):
 def count_unique_chars(x):
     return len(set(str(x).lower().replace(" ", "")))
 
-# ══ ROUND 3 — HARD (3 questions, ~5-6 min each) ══════════════════════════════
+def word_length_sum(x):
+    # input: any sentence → sum of the length of each word
+    return sum(len(w) for w in str(x).split())
+
+# ══ ROUND 3 — HARD ════════════════════════════════════════════════════════════
 
 def caesar(x):
     try:
@@ -144,6 +154,17 @@ def anagram_sort(x):
         return ''.join(sorted(str(x).lower().replace(" ","")))
     return ' '.join(''.join(sorted(w)) for w in words)
 
+def rot13_reverse(x):
+    # ROT13 the string, then reverse the result
+    rot = ''
+    for c in str(x):
+        if c.isalpha():
+            base = ord('a') if c.islower() else ord('A')
+            rot += chr((ord(c) - base + 13) % 26 + base)
+        else:
+            rot += c
+    return rot[::-1]
+
 # ══ REGISTRY ══════════════════════════════════════════════════════════════════
 
 CHALLENGES = [
@@ -159,16 +180,21 @@ CHALLENGES = [
     uppercase,           # C10 — easy
     remove_spaces,       # C11 — easy
     first_last_char,     # C12 — easy
-    binary_to_decimal,   # C13 — medium
-    ascii_sum,           # C14 — medium
-    fizzbuzz,            # C15 — medium
-    reverse_vowels,      # C16 — medium
-    is_palindrome,       # C17 — medium
-    vowel_consonant_swap,# C18 — medium
-    count_unique_chars,  # C19 — medium
-    caesar,              # C20 — hard
-    pig_latin,           # C21 — hard
-    anagram_sort,        # C22 — hard
+    double_chars,        # C13 — easy
+    lowercase,           # C14 — easy
+    count_digits,        # C15 — easy
+    binary_to_decimal,   # C16 — medium
+    ascii_sum,           # C17 — medium
+    fizzbuzz,            # C18 — medium
+    reverse_vowels,      # C19 — medium
+    is_palindrome,       # C20 — medium
+    vowel_consonant_swap,# C21 — medium
+    count_unique_chars,  # C22 — medium
+    word_length_sum,     # C23 — medium
+    caesar,              # C24 — hard
+    pig_latin,           # C25 — hard
+    anagram_sort,        # C26 — hard
+    rot13_reverse,       # C27 — hard
 ]
 
 ANSWERS = {
@@ -176,7 +202,7 @@ ANSWERS = {
     2:  "reverse string",
     3:  "count characters",
     4:  "count words",
-    5:  "upper case",
+    5:  "title case",
     6:  "sum of digits",
     7:  "count consonants",
     8:  "repeat string",
@@ -184,91 +210,75 @@ ANSWERS = {
     10: "uppercase",
     11: "remove spaces",
     12: "first and last character",
-    13: "binary to decimal",
-    14: "sum of ascii values",
-    15: "fizzbuzz",
-    16: "reverse vowels",
-    17: "palindrome check",
-    18: "vowel consonant swap",
-    19: "count unique characters",
-    20: "caesar cipher",
-    21: "pig latin",
-    22: "anagram sort",
+    13: "double characters",
+    14: "lowercase",
+    15: "count digits",
+    16: "binary to decimal",
+    17: "sum of ascii values",
+    18: "fizzbuzz",
+    19: "reverse vowels",
+    20: "palindrome check",
+    21: "vowel consonant swap",
+    22: "count unique characters",
+    23: "word length sum",
+    24: "caesar cipher",
+    25: "pig latin",
+    26: "anagram sort",
+    27: "rot13 reverse",
 }
 
 ANSWER_KEYWORDS = {
+    # ── EASY (broad, forgiving) ───────────────────────────────────────────────
     1:  [["vowel","count"],["count","vowel"],["number","vowel"],["no","vowel"]],
-    2:  [["reverse","string"],["reverse","character"],["flip","string"],["string","reverse"]],
-    3:  [["count","character"],["character","count"],["char","count"],["length","no space"],["count","char"]],
+    2:  [["reverse","string"],["reverse","character"],["flip","string"],["string","reverse"],
+         ["reverse","word"],["word","reverse"],["reversed"],["backwards"],["reverse"]],
+    3:  [["count","character"],["character","count"],["char","count"],["count","char"]],
     4:  [["count","word"],["word","count"],["number","word"],["no","word"]],
-    5:  [["title","case"],["capitalize","word"],["title case"],["word","capitalize"],["capital","uppercase"]],
+    5:  [["title","case"],["capitalize","word"],["word","capitalize"],
+         ["first","letter","upper"],["first","letter","capital"],
+         ["first","character","upper"],["first","character","capital"],
+         ["each","word","capital"],["each","word","upper"],["word","upper"],["word","capital"]],
     6:  [["sum","digit"],["digit","sum"],["add","digit"],["total","digit"]],
     7:  [["count","consonant"],["consonant","count"],["number","consonant"],["no","consonant"]],
     8:  [["repeat","string"],["string","repeat"],["duplicate","string"],["repeat"]],
     9:  [["even","odd"],["odd","even"],["even or odd"],["parity"]],
-    10: [["uppercase"],["upper","case"],["all","upper"],["caps"],["capital"]],
+    10: [["uppercase"],["upper","case"],["all","upper"],["caps"]],
     11: [["remove","space"],["strip","space"],["no","space"],["space","remove"]],
-    12: [["first","last"],["first","last","char"],["first last"],["boundary","char"]],
-    13: [["binary","decimal"],["bin","dec"],["binary","convert"],["base","2"]],
-    14: [["ascii","sum"],["sum","ascii"],["ascii","value"],["ascii","total"]],
-    15: [["fizzbuzz"],["fizz","buzz"],["fizz buzz"]],
-    16: [["reverse","vowel"],["vowel","reverse"],["flip","vowel"],["vowel","swap"]],
-    17: [["palindrome"],["reads","same"],["same","backwards"],["palindrome","check"]],
-    18: [["vowel","consonant","swap"],["vowel","symbol"],["mask","vowel"],["replace","vowel"]],
-    19: [["unique","char"],["count","unique"],["distinct","char"],["unique","letter"]],
-    20: [
-            ["caesar"],
-            ["caesar","cipher"],
-            ["shift","cipher"],
-            ["letter","shift"],
-            ["caesar","shift"],
-            ["shift","letter"],
-            ["rotate","letter"],
-            ["rotate","alphabet"],
-            ["shift","alphabet"],
-            ["encrypt","shift"],
-            ["shift","position"],
-            ["alphabet","shift"],
-            ["character","shift"],
-            ["encode","shift"],
-            ["shifting"],
-            ["letter","rotation"],
-            ["alphabet","rotation"],
-            ["shift","by"],
-            ["move","letter"],
-            ["letter","moved"],
-        ],
-    21: [["pig","latin"],["piglatin"],["pig latin"]],
-    22: [["anagram"],["anagram","sort"],["sort","letter"],["alphabetical","sort"],["letter","sort"]],
+    12: [["first","last"],["first","last","char"],["boundary","char"]],
+    13: [["double","char"],["double","character"],["each","char","twice"],["double","letter"]],
+    14: [["lowercase"],["lower","case"],["all","lower"],["small","case"]],
+    15: [["count","digit"],["digit","count"],["number","digit"],["no","digit"]],
+
+    # ── MEDIUM (tighter — must be specific) ───────────────────────────────────
+    16: [["binary","decimal"],["binary","convert"],["base","2","decimal"]],
+    17: [["ascii","sum"],["sum","ascii"],["ascii","value","sum"]],
+    18: [["fizzbuzz"],["fizz","buzz"]],
+    19: [["reverse","vowel"],["vowel","reverse"]],
+    20: [["palindrome"],["palindrome","check"]],
+    21: [["vowel","consonant","swap"],["vowel","consonant","symbol"]],
+    22: [["unique","char"],["count","unique","char"],["distinct","char"]],
+    23: [["word","length","sum"],["sum","word","length"],["total","word","length"]],
+
+    # ── HARD (very tight — must name the concept) ─────────────────────────────
+    24: [["caesar"],["caesar","cipher"],["caesar","shift"]],
+    25: [["pig","latin"],["pig latin"]],
+    26: [["anagram","sort"],["sort","letter","alphabetical"],["anagram"]],
+    27: [["rot13","reverse"],["rot","13","reverse"],["rot13","reversed"],
+         ["reverse","rot13"],["rot 13","revers"]],
 }
 
-# Hints: minimal — only shown when explicitly requested. Easy=vague, Medium=slightly more, Hard=directional.
 HINTS = {
-    # Easy — very vague, just a nudge
-    1:  "think about specific letters in the alphabet",
-    2:  "what if you read it backwards",
-    3:  "spaces don't count",
-    4:  "try inputs with different numbers of words",
-    5:  "look at the first letter of each word",
-    6:  "try a number like 123",
-    7:  "not vowels",
-    8:  "try input with a comma",
-    9:  "try 4 and then 7",
-    10: "look at the case of each letter",
-    11: "what's missing from the output",
-    12: "look at the very start and end",
-    # Medium — slightly more revealing
-    13: "think in powers of 2",
-    14: "every character has a code number",
-    15: "try 3, 5, and 15 as inputs",
-    16: "only certain letters move",
-    17: "try 'racecar' vs 'hello'",
-    18: "two different symbols appear — what do they represent",
-    19: "probe the same letter multiple times",
-    # Hard — directional only
-    20: "you need two parts in your input — separated by a comma",
-    21: "probe a single word — where do parts of it go",
-    22: "probe 'cat' then 'act' — compare outputs",
+    # Easy — no hints
+    # Medium — only for genuinely tricky ones
+    18: "try inputs 3, 5, and 15 — certain words appear at multiples",
+    19: "probe 'hello' carefully — only certain letters change position",
+    21: "probe 'hello' — only two symbols appear in the output",
+    23: "try 'hello world' vs 'hi' — compare with char count, it's different",
+    # Hard — one directional nudge each
+    24: "input needs two parts separated by a comma — try 'abc,1' then 'abc,2'",
+    25: "probe one word at a time — parts of the word move with 'ay' at the end",
+    26: "probe 'cat' then 'act' — compare the two outputs carefully",
+    27: "two things happen to your input — probe 'abc' then 'abcd' and look closely",
 }
 
 def get_challenge(chal_id):

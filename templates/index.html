@@ -458,14 +458,8 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
           <div class="output-meta" id="output-meta"></div>
           <div class="error-msg" id="error-msg"></div>
         </div>
-        <div class="query-progress">
-          <div class="progress-header">
-            <span>QUERY BUDGET</span>
-            <span id="query-label">0 / 30 used</span>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-          </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.05em;">
+          ⚠ Each query deducts points — probe wisely. Fewer queries = higher score.
         </div>
       </div>
 
@@ -509,7 +503,6 @@ textarea:focus { border-color: rgba(0,255,100,0.4); }
 </div>
 
 <script>
-const QUERY_LIMIT = 30;
 const ROUND_TIMES = { 1: 20, 2: 25, 3: 15 };
 const ROUND_NAMES = {
   1: 'ROUND 1 — QUALIFIER',
@@ -519,12 +512,11 @@ const ROUND_NAMES = {
 
 // Maps round → actual challenge IDs in challenges.py
 const ROUND_CHALLENGE_IDS = {
-  1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-  2: [13, 14, 15, 16, 17, 18, 19],
-  3: [20, 21, 22]
+  1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  2: [16, 17, 18, 19, 20, 21, 22, 23],
+  3: [24, 25, 26, 27]
 };
 
-let queriesUsed      = 0;
 let selectedChallenge = 1;   // actual backend challenge ID
 let history          = [];
 let timerInterval    = null;
@@ -628,7 +620,6 @@ async function probe() {
   errEl.textContent = '';
   if (!team)  { errEl.textContent = 'ERROR: enter team name'; return; }
   if (!input) { errEl.textContent = 'ERROR: enter input value'; return; }
-  if (queriesUsed >= QUERY_LIMIT) { errEl.textContent = 'QUERY BUDGET EXHAUSTED'; return; }
 
   outEl.innerHTML = '<span class="cursor"></span>';
 
@@ -649,10 +640,8 @@ async function probe() {
     }
     if (data.error) { errEl.textContent = 'ERROR: ' + data.error; outEl.textContent = '—'; return; }
 
-    queriesUsed = data.queries_used;
     typewriterOutput(String(data.output), outEl);
-    metaEl.textContent = `challenge ${selectedChallenge}  ·  input: ${input}`;
-    updateProgress();
+    metaEl.textContent = `challenge ${selectedChallenge}  ·  input: ${input}  ·  queries this round: ${data.round_queries}`;
     addHistoryRow(selectedChallenge, input, data.output);
     unlockNextChallenge(selectedChallenge);
     setStatus(`LAST PROBE: C${selectedChallenge} [${input}] → ${data.output}`);
@@ -676,16 +665,6 @@ function typewriterOutput(text, el) {
   type();
 }
 
-function updateProgress() {
-  const pct  = (queriesUsed / QUERY_LIMIT) * 100;
-  const fill = document.getElementById('progress-fill');
-  const lbl  = document.getElementById('query-label');
-  fill.style.width  = pct + '%';
-  fill.className    = 'progress-fill';
-  if (pct >= 80) fill.classList.add('danger');
-  else if (pct >= 60) fill.classList.add('warn');
-  lbl.textContent = `${queriesUsed} / ${QUERY_LIMIT} used`;
-}
 
 function addHistoryRow(cid, input, output) {
   const now  = new Date();
